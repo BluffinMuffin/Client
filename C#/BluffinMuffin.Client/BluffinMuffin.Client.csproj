@@ -36,6 +36,9 @@
     <ApplicationIcon>cards.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol">
+      <HintPath>..\..\..\BluffinMuffin.Server\C#\References\BluffinMuffin.Protocol.dll</HintPath>
+    </Reference>
     <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using BluffinMuffin.Client.Windows.Forms.Properties;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.DataTypes.Options;
 using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Client.Windows.Forms.Lobby

@@ -1,7 +1,6 @@
 ﻿using System;
 using BluffinMuffin.Protocol.Game;
 using Com.Ericmas001.Net.Protocol.JSON;
-using Com.Ericmas001.Net.Protocol;
 
 namespace BluffinMuffin.Client.Protocol
 {

@@ -64,6 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandQueueCommunicator.cs" />
+    <Compile Include="CommandEventArgs.cs" />
     <Compile Include="DummyTable.cs" />
     <Compile Include="GameObserver.cs" />
     <Compile Include="GameTcpClient.cs" />

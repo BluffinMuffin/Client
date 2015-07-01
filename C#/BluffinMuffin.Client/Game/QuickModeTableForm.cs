@@ -1,5 +1,5 @@
 ﻿using BluffinMuffin.Client.Windows.Forms.Game;
-using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Options;
 
 namespace BluffinMuffin.Client.Game
 {

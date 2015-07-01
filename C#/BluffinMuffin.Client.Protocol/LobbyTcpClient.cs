@@ -13,6 +13,7 @@ using Com.Ericmas001.Util;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Com.Ericmas001.Net.Protocol;
+using AbstractCommand = BluffinMuffin.Protocol.AbstractCommand;
 
 namespace BluffinMuffin.Client.Protocol
 {
@@ -208,7 +209,7 @@ namespace BluffinMuffin.Client.Protocol
 
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Run", "{0} RECV [{1}]", PlayerName, line);
 
-                AbstractBluffinCommand cmd = AbstractBluffinCommand.DeserializeCommand(line);
+                AbstractCommand cmd = AbstractCommand.DeserializeCommand(line);
                 if (cmd.CommandType == BluffinCommandEnum.Game)
                 {
                     var c = (IGameCommand) cmd;

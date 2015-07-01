@@ -271,10 +271,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 }
 
                 //Set Small Blind Icon
-                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetSmallBlind());
+                table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetSmallBlind());
 
                 //Set Big Blind Icon
-                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetBigBlind());
+                table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetBigBlind());
 
                 if (table.CurrentPlayerSeat != null)
                     m_Huds[table.NoSeatCurrentPlayer].SetPlaying();
@@ -456,8 +456,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             if (m_Game.Table.NoSeatDealer >= 0)
                 WriteLine("==> " + m_Game.Table.Seats[m_Game.Table.NoSeatDealer].Player.Name + " is the Dealer");
 
-            m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the SmallBlind"));
-            m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the BigBlind"));
+            m_Game.Table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the SmallBlind"));
+            m_Game.Table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the BigBlind"));
         }
 
         void OnPlayerActionTaken_Console(object sender, PlayerActionEventArgs e)
@@ -541,7 +541,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 var player = seat.Player;
                 php.PlayerName = player.Name;
                 php.DoAction(GameActionEnum.DoNothing);
-                var cards = player.HoleCards.ToArray();
+                var cards = (player.HoleCards??new []{"--","--"}).ToArray();
                 php.SetMoney(player.MoneySafeAmnt);
                 php.SetSleeping();
                 php.Main = (m_NoSeat == player.NoSeat);
@@ -549,7 +549,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 if (php.Alive)
                     php.SetCards(new GameCard(cards[0]), new GameCard(cards[1]));
                 php.Visible = true;
-                php.SetDealerButtonVisible(seat.Attributes.Contains(SeatAttributeEnum.Dealer));
+                php.SetDealerButtonVisible(seat.SeatAttributes.Contains(SeatAttributeEnum.Dealer));
             }
         }
     }

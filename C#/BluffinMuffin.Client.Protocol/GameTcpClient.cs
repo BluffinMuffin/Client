@@ -10,6 +10,7 @@ using BluffinMuffin.Protocol.Game;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Util;
+using AbstractCommand = BluffinMuffin.Protocol.AbstractCommand;
 
 namespace BluffinMuffin.Client.Protocol
 {
@@ -150,8 +151,8 @@ namespace BluffinMuffin.Client.Protocol
             {
                 var cmd = e.Command;
                 
-                if (m_TablePosition >= 0 && cmd.NeededBlind > 0)
-                    Send(new PlayerPlayMoneyCommand() { Played = cmd.NeededBlind });
+                if (m_TablePosition >= 0 && cmd.NeededBlindAmount > 0)
+                    Send(new PlayerPlayMoneyCommand() { AmountPlayed = cmd.NeededBlindAmount });
 
                 //if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.BigBlind))
                 //    Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
@@ -165,11 +166,11 @@ namespace BluffinMuffin.Client.Protocol
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
-                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var p = m_PokerTable.Seats[cmd.NoSeat].Player;
 
                 if (p != null)
                 {
-                    SetPlayerVisibility(p, cmd.State, cmd.Cards.Select(id => new GameCard(id)).ToList());
+                    SetPlayerVisibility(p, cmd.PlayerState, cmd.Cards.Select(id => new GameCard(id)).ToList());
 
                     Observer.RaisePlayerHoleCardsChanged(p);
                 }
@@ -214,12 +215,12 @@ namespace BluffinMuffin.Client.Protocol
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
-                var ps = m_PokerTable.Seats[cmd.PlayerPos];
+                var ps = m_PokerTable.Seats[cmd.NoSeat];
 
                 if (!ps.IsEmpty)
                 {
                     m_PokerTable.ChangeCurrentPlayerTo(ps);
-                    m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
+                    m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaiseAmount;
 
                     Observer.RaisePlayerActionNeeded(ps.Player);
                 }
@@ -231,18 +232,18 @@ namespace BluffinMuffin.Client.Protocol
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
-                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var p = m_PokerTable.Seats[cmd.NoSeat].Player;
 
-                m_PokerTable.HigherBet = Math.Max(m_PokerTable.HigherBet, cmd.PlayerBet);
+                m_PokerTable.HigherBet = Math.Max(m_PokerTable.HigherBet, cmd.TotalPlayedMoneyAmount);
                 m_PokerTable.TotalPotAmnt = cmd.TotalPot;
 
                 if (p != null)
                 {
-                    p.MoneyBetAmnt = cmd.PlayerBet;
-                    p.MoneySafeAmnt = cmd.PlayerMoney;
-                    p.State = cmd.State;
+                    p.MoneyBetAmnt = cmd.TotalPlayedMoneyAmount;
+                    p.MoneySafeAmnt = cmd.TotalSafeMoneyAmount;
+                    p.State = cmd.PlayerState;
 
-                    Observer.RaisePlayerActionTaken(p, cmd.ActionType, cmd.ActionAmount);
+                    Observer.RaisePlayerActionTaken(p, cmd.ActionTakenType, cmd.ActionTakenAmount);
                 }
             }
         }
@@ -252,13 +253,13 @@ namespace BluffinMuffin.Client.Protocol
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
-                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var p = m_PokerTable.Seats[cmd.NoSeat].Player;
 
                 if (p != null)
                 {
-                    p.MoneySafeAmnt = cmd.PlayerMoney;
+                    p.MoneySafeAmnt = cmd.TotalPlayerMoney;
 
-                    Observer.RaisePlayerWonPot(p, cmd.PotId, cmd.Shared);
+                    Observer.RaisePlayerWonPot(p, cmd.PotId, cmd.WonAmount);
                 }
             }
         }
@@ -304,7 +305,7 @@ namespace BluffinMuffin.Client.Protocol
 
         public bool PlayMoney(PlayerInfo p, int amnt)
         {
-            Send(new PlayerPlayMoneyCommand() { TableId=m_NoPort, Played = amnt });
+            Send(new PlayerPlayMoneyCommand() { TableId=m_NoPort, AmountPlayed = amnt });
             return true;
         }
 
@@ -348,7 +349,7 @@ namespace BluffinMuffin.Client.Protocol
         private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, List<GameCard> cards)
         {
             p.State = pState;
-            p.Cards = cards.ToArray();
+            p.HoleCards = cards.Select(x => x.ToString()).ToArray();
         }
         #endregion Private Methods
 
