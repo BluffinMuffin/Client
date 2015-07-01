@@ -8,3 +8,5 @@ Client betas can be found here: [Previous Betas](https://github.com/Ericmas001/B
 Current version is [0.7.0](https://github.com/Ericmas001/BluffinMuffin.Client/releases/tag/v0.7.0) (2015-07-01)
  * Implements BluffinMuffin.Protocol v1.1.1
  * Supports servers implementing Protocol v1.0 or higher
+
+![alt tag](https://googledrive.com/host/0B2wUdLMFaj9JX0pPakRnbWZkeTQ/Beta4.png)
