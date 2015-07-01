@@ -24,6 +24,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinMuffin.Client.Window
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinMuffin.Client.DataTypes", "BluffinMuffin.Client.DataTypes\BluffinMuffin.Client.DataTypes.csproj", "{12D7D514-4C0F-49FE-8F9B-5D3267AD5AC9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{667C9037-09CE-408B-834D-876EE02FB80E}"
+	ProjectSection(SolutionItems) = preProject
+		..\Documentation\dummy.md = ..\Documentation\dummy.md
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
