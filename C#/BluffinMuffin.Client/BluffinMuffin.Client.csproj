@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E1AE34E6-D758-4839-A647-B6630B000DB8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BluffinMuffin.Client</RootNamespace>
+    <AssemblyName>BluffinMuffin.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cards.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Util">
+      <HintPath>..\References\Com.Ericmas001.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Windows.Forms">
+      <HintPath>..\References\Com.Ericmas001.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game\BuyInForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\BuyInForm.Designer.cs">
+      <DependentUpon>BuyInForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\RegisteredModeTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\RegisteredModeTableForm.Designer.cs">
+      <DependentUpon>RegisteredModeTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\QuickModeTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\QuickModeTableForm.Designer.cs">
+      <DependentUpon>QuickModeTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LobbyRegisteredModeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LobbyRegisteredModeForm.Designer.cs">
+      <DependentUpon>LobbyRegisteredModeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LobbyQuickModeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LobbyQuickModeForm.Designer.cs">
+      <DependentUpon>LobbyQuickModeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu\RegisteredModeConnectParmsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu\RegisteredModeConnectParmsForm.Designer.cs">
+      <DependentUpon>RegisteredModeConnectParmsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu\RegisteredModeRegisterParmsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu\RegisteredModeRegisterParmsForm.Designer.cs">
+      <DependentUpon>RegisteredModeRegisterParmsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu\MenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu\MenuForm.Designer.cs">
+      <DependentUpon>MenuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu\QuickModeParmsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu\QuickModeParmsForm.Designer.cs">
+      <DependentUpon>QuickModeParmsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Splash\RegisteredModeConnectSplashInfo.cs" />
+    <Compile Include="Splash\RegisteredModeRegisterSplashInfo.cs" />
+    <Compile Include="Splash\QuickModeSplashInfo.cs" />
+    <EmbeddedResource Include="Game\BuyInForm.resx">
+      <DependentUpon>BuyInForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LobbyRegisteredModeForm.resx">
+      <DependentUpon>LobbyRegisteredModeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LobbyQuickModeForm.resx">
+      <DependentUpon>LobbyQuickModeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu\RegisteredModeConnectParmsForm.resx">
+      <DependentUpon>RegisteredModeConnectParmsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu\RegisteredModeRegisterParmsForm.resx">
+      <DependentUpon>RegisteredModeRegisterParmsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu\MenuForm.resx">
+      <DependentUpon>MenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu\QuickModeParmsForm.resx">
+      <DependentUpon>QuickModeParmsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add_user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cards_mini.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\learn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\leave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sit-in.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="cards.ico" />
+    <Content Include="chips2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BluffinMuffin.Client.DataTypes\BluffinMuffin.Client.DataTypes.csproj">
+      <Project>{12D7D514-4C0F-49FE-8F9B-5D3267AD5AC9}</Project>
+      <Name>BluffinMuffin.Client.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Client.Protocol\BluffinMuffin.Client.Protocol.csproj">
+      <Project>{29F0952B-EF3C-465F-94D7-2DB43C8116E4}</Project>
+      <Name>BluffinMuffin.Client.Protocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Client.Windows.Forms\BluffinMuffin.Client.Windows.Forms.csproj">
+      <Project>{CA68E0E9-2B64-4FDE-8805-2AE2970B5A15}</Project>
+      <Name>BluffinMuffin.Client.Windows.Forms</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
