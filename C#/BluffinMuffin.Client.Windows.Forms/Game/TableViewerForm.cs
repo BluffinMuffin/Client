@@ -336,7 +336,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             var p = e.Player;
             var php = m_Huds[p.NoSeat];
             if(p.HoleCards.Length == 2)
-                php.SetCards(new GameCard(p.HoleCards[0]), new GameCard(p.HoleCards[1]));
+                php.SetCards(ConvertToGameCard(p.HoleCards[0]), ConvertToGameCard(p.HoleCards[1]));
             else
                 php.SetCards(null, null);
             ResumeLayout();
@@ -480,7 +480,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             var p = e.Player;
-            if (new GameCard(p.HoleCards[0]).Id >= 0)
+            if (ConvertToGameCard(p.HoleCards[0]).Id >= 0)
                 WriteLine("==> Hole Card changed for " + p.Name + ": " + p.HoleCards[0] + " " + p.HoleCards[1]);
         }
 
@@ -532,6 +532,11 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ")");
         }
 
+        private GameCard ConvertToGameCard(string c)
+        {
+            return new GameCard(String.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
+        }
+
         private void InstallPlayer(PlayerHud php, SeatInfo seat)
         {
             if (seat.IsEmpty)
@@ -547,7 +552,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 php.Main = (m_NoSeat == player.NoSeat);
                 php.Alive = player.State == PlayerStateEnum.Playing;
                 if (php.Alive)
-                    php.SetCards(new GameCard(cards[0]), new GameCard(cards[1]));
+                    php.SetCards(ConvertToGameCard(cards[0]), ConvertToGameCard(cards[1]));
                 php.Visible = true;
                 php.SetDealerButtonVisible(seat.SeatAttributes.Contains(SeatAttributeEnum.Dealer));
             }

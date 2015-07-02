@@ -170,7 +170,7 @@ namespace BluffinMuffin.Client.Protocol
 
                 if (p != null)
                 {
-                    SetPlayerVisibility(p, cmd.PlayerState, cmd.Cards.Select(id => new GameCard(id)).ToList());
+                    SetPlayerVisibility(p, cmd.PlayerState, cmd.Cards.Select(id => ConvertToGameCard(id)).ToList());
 
                     Observer.RaisePlayerHoleCardsChanged(p);
                 }
@@ -340,9 +340,14 @@ namespace BluffinMuffin.Client.Protocol
             }
         }
 
+        private GameCard ConvertToGameCard(string c)
+        {
+            return new GameCard(String.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
+        }
+
         private void SetCards(IEnumerable<string> cardsId)
         {
-            var cards = cardsId.Select(c => new GameCard(c)).ToArray();
+            var cards = cardsId.Select(ConvertToGameCard).ToArray();
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
         }
 
