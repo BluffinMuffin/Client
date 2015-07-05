@@ -5,8 +5,8 @@ It all started as a java school project in 2010. Since then, project migred to C
 
 Client betas can be found here: [Previous Betas](https://github.com/Ericmas001/BluffinMuffin.Client/releases/tag/v0.6-beta-6)
 
-Current version is [0.7.0](https://github.com/Ericmas001/BluffinMuffin.Client/releases/tag/v0.7.0) (2015-07-01)
- * Implements BluffinMuffin.Protocol v1.1.1
- * Supports servers implementing Protocol v1.0 or higher
+Current version is [0.8.0](https://github.com/Ericmas001/BluffinMuffin.Client/releases/tag/v0.8.0) (2015-07-05)
+ * Implements BluffinMuffin.Protocol v2.1.0
+ * Supports servers implementing Protocol v2.1.0 or higher
 
 ![alt tag](https://googledrive.com/host/0B2wUdLMFaj9JX0pPakRnbWZkeTQ/Beta4.png)
