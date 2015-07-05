@@ -129,7 +129,6 @@ namespace BluffinMuffin.Client.Protocol
             {
                 var cmd = e.Command;
                 SetCards(cmd.Cards);
-                m_PokerTable.Round = cmd.Round;
 
                 Observer.RaiseGameBettingRoundStarted(cmd.Round);
             }

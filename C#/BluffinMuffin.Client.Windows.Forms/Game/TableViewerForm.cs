@@ -411,15 +411,9 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             }
             var table = m_Game.Table;
             WriteLine("==> Beginning of " + e.Round);
-            if (e.Round != RoundTypeEnum.Preflop)
-            {
-                Write("==> Current board cards:");
-                for (var i = 0; i < 5 && table.Cards[i].Id != GameCard.NoCard.Id; ++i)
-                {
-                    Write(" " + table.Cards[i]);
-                }
-                WriteLine("");
-            }
+            var boardCards = table.Cards.Where(c => c != null && c.Id != GameCard.NoCard.Id).ToArray();
+            if (boardCards.Any())
+                WriteLine("==> Current board cards: " + String.Join(" ", boardCards.Select(c => c.ToString())));
         }
 
         void OnGameBlindNeeded_Console(object sender, EventArgs e)

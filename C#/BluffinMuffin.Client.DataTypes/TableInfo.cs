@@ -152,11 +152,6 @@ namespace BluffinMuffin.Client.DataTypes
         public int HigherBet { get; set; }
 
         /// <summary>
-        /// What is the actual Round of the Game
-        /// </summary>
-        public RoundTypeEnum Round { get; set; }
-
-        /// <summary>
         /// List of the Players currently seated
         /// </summary>
         public List<PlayerInfo> Players { get { return m_Seats.Where(s => !s.IsEmpty).Select(s => s.Player).ToList(); } }
@@ -180,24 +175,6 @@ namespace BluffinMuffin.Client.DataTypes
         public IEnumerable<PlayerInfo> PlayingAndAllInPlayers
         {
             get { return PlayingAndAllInPlayersFrom(); }
-        }
-
-        public SeatInfo SeatOfTheFirstPlayer
-        {
-            get
-            {
-                var seat = GetSeatOfPlayingPlayerNextTo(DealerSeat);
-
-                if (Round == RoundTypeEnum.Preflop && Params.Blind.OptionType == BlindTypeEnum.Blinds)
-                {
-                    //Ad B : A      A
-                    //Ad B C: A     A->B->C->A
-                    //Ad B C D: D   A->B->C->D
-                    seat = NbPlayingAndAllIn < 3 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(DealerSeat)));
-                }
-
-                return seat;
-            }
         }
         #endregion Properties
 
