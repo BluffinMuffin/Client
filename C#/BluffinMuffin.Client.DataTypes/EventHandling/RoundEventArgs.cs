@@ -5,10 +5,10 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
 {
     public class RoundEventArgs : EventArgs
     {
-        private readonly RoundTypeEnum m_Round;
-        public RoundTypeEnum Round { get { return m_Round; } }
+        private readonly int m_Round;
+        public int Round { get { return m_Round; } }
 
-        public RoundEventArgs(RoundTypeEnum r)
+        public RoundEventArgs(int r)
         {
             m_Round = r;
         }

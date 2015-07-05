@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using BluffinMuffin.Client.DataTypes;
 using BluffinMuffin.Client.DataTypes.EventHandling;
 using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Client.Windows.Forms.Game

@@ -1,5 +1,6 @@
 ﻿using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 using System;
 
@@ -14,11 +15,9 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         public event EventHandler GameEnded = delegate { };
         public event EventHandler GameGenerallyUpdated = delegate { };
         public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
-        public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
+        public event EventHandler GameBettingRoundEnded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerLeft = delegate { };
         public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
@@ -47,29 +46,21 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         {
             GameGenerallyUpdated(m_Game, new EventArgs());
         }
-        public void RaiseGameBettingRoundStarted(RoundTypeEnum r)
+        public void RaiseGameBettingRoundStarted(int r)
         {
             GameBettingRoundStarted(m_Game, new RoundEventArgs(r));
         }
-        public void RaiseGameBettingRoundEnded(RoundTypeEnum r)
+        public void RaiseGameBettingRoundEnded()
         {
-            GameBettingRoundEnded(m_Game, new RoundEventArgs(r));
+            GameBettingRoundEnded(m_Game, new EventArgs());
         }
         public void RaisePlayerJoined(PlayerInfo p)
         {
             PlayerJoined(m_Game, new PlayerInfoEventArgs(p));
         }
-        public void RaisePlayerMoneyChanged(PlayerInfo p)
-        {
-            PlayerMoneyChanged(m_Game, new PlayerInfoEventArgs(p));
-        }
         public void RaisePlayerHoleCardsChanged(PlayerInfo p)
         {
             PlayerHoleCardsChanged(m_Game, new PlayerInfoEventArgs(p));
-        }
-        public void RaisePlayerLeft(PlayerInfo p)
-        {
-            PlayerLeft(m_Game, new PlayerInfoEventArgs(p));
         }
         public void RaiseSeatUpdated(SeatInfo s)
         {

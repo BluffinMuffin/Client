@@ -1,4 +1,5 @@
 ﻿using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.EventHandling;
 
 namespace BluffinMuffin.Client.DataTypes.EventHandling
 {

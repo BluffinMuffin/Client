@@ -119,7 +119,7 @@ namespace BluffinMuffin.Client.Protocol
                 m_PokerTable.HigherBet = 0;
                 m_PokerTable.Players.ForEach(p => p.MoneyBetAmnt = 0);
 
-                Observer.RaiseGameBettingRoundEnded(cmd.Round);
+                Observer.RaiseGameBettingRoundEnded();
             }
         }
 
@@ -130,7 +130,7 @@ namespace BluffinMuffin.Client.Protocol
                 var cmd = e.Command;
                 SetCards(cmd.Cards);
 
-                Observer.RaiseGameBettingRoundStarted(cmd.Round);
+                Observer.RaiseGameBettingRoundStarted(cmd.BettingRoundId);
             }
         }
 

@@ -6,6 +6,7 @@ using BluffinMuffin.Client.DataTypes.EventHandling;
 using BluffinMuffin.Client.Windows.Forms.Properties;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.DataTypes.EventHandling;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Util;
 
@@ -93,12 +94,6 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             logConsole.WriteLine(line);
         }
 
-        private void Write(string msg)
-        {
-            LogManager.Log(LogLevel.Message, "Game", msg);
-            logConsole.Write(msg);
-        }
-
         private void InitializePokerObserverForGui()
         {
             m_Game.Observer.EverythingEnded += OnEverythingEnded;
@@ -110,7 +105,6 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
             m_Game.Observer.SeatUpdated += OnSeatUpdated;
-            m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot;
         }
 
@@ -130,11 +124,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged_Console;
             m_Game.Observer.PlayerJoined += OnPlayerJoined_Console;
             m_Game.Observer.SeatUpdated += OnSeatUpdated_Console;
-            m_Game.Observer.PlayerLeft += OnPlayerLeft_Console;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot_Console;
         }
 
-        void OnGameBettingRoundEnded(object sender, RoundEventArgs e)
+        void OnGameBettingRoundEnded(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
@@ -358,21 +351,6 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             ResumeLayout();
         }
 
-        void OnPlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerMoneyChanged), new[] { sender, e });
-                return;
-            }
-            SuspendLayout();
-            var p = e.Player;
-            var php = m_Huds[p.NoSeat];
-            php.SetMoney(p.MoneySafeAmnt);
-            ResumeLayout();
-        }
-
         void OnPlayerWonPot(object sender, PotWonEventArgs e)
         {
             if (InvokeRequired)
@@ -410,10 +388,26 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             var table = m_Game.Table;
-            WriteLine("==> Beginning of " + e.Round);
+            WriteLine("==> Beginning of " + RoundNameFromId(e.Round));
             var boardCards = table.Cards.Where(c => c != null && c.Id != GameCard.NoCard.Id).ToArray();
             if (boardCards.Any())
                 WriteLine("==> Current board cards: " + String.Join(" ", boardCards.Select(c => c.ToString())));
+        }
+
+        public string RoundNameFromId(int id)
+        {
+            switch (id)
+            {
+                case 1:
+                    return "Preflop";
+                case 2:
+                    return "Flop";
+                case 3:
+                    return "Turn";
+                case 4:
+                    return "River";
+            }
+            return "Unknown Round";
         }
 
         void OnGameBlindNeeded_Console(object sender, EventArgs e)
@@ -502,17 +496,6 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 WriteLine("The seat #" + s.NoSeat + " is now inoccupied");
             else
                 WriteLine(s.Player.Name + " sat in at seat #" + s.NoSeat);
-        }
-
-        void OnPlayerLeft_Console(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft_Console), new[] { sender, e });
-                return;
-            }
-            WriteLine(e.Player.Name + " left the table");
         }
 
         void OnPlayerWonPot_Console(object sender, PotWonEventArgs e)
