@@ -132,7 +132,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundEnded), new[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameBettingRoundEnded), new[] { sender, e });
                 return;
             }
             SuspendLayout();
