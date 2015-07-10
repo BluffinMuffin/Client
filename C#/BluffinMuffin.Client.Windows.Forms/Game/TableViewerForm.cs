@@ -469,7 +469,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             }
             var p = e.Player;
             if (ConvertToGameCard(p.HoleCards[0]).Id >= 0)
-                WriteLine("==> Hole Card changed for " + p.Name + ": " + p.HoleCards[0] + " " + p.HoleCards[1]);
+                WriteLine("==> Hole Card changed for " + p.Name + ": " + String.Join(" ", p.HoleCards));
         }
 
         void OnPlayerJoined_Console(object sender, PlayerInfoEventArgs e)
@@ -506,7 +506,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot_Console), new[] { sender, e });
                 return;
             }
-            WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ")");
+            WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ") with " + e.Hand + " [" + String.Join(",", e.Cards) + "]");
         }
 
         private GameCard ConvertToGameCard(string c)

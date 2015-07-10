@@ -258,7 +258,7 @@ namespace BluffinMuffin.Client.Protocol
                 {
                     p.MoneySafeAmnt = cmd.TotalPlayerMoney;
 
-                    Observer.RaisePlayerWonPot(p, cmd.PotId, cmd.WonAmount);
+                    Observer.RaisePlayerWonPot(p, cmd.PotId, cmd.WonAmount, cmd.WinningHand, cmd.WinningCards);
                 }
             }
         }

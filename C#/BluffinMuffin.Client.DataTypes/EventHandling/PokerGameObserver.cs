@@ -70,9 +70,9 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         {
             PlayerActionNeeded(m_Game, new PlayerInfoEventArgs(p));
         }
-        public void RaisePlayerWonPot(PlayerInfo p, int id, int amntWon)
+        public void RaisePlayerWonPot(PlayerInfo p, int id, int amntWon, PokerHandEnum hand, string[] cards)
         {
-            PlayerWonPot(m_Game, new PotWonEventArgs(p, id, amntWon));
+            PlayerWonPot(m_Game, new PotWonEventArgs(p, id, amntWon, hand, cards));
         }
         public void RaisePlayerActionTaken(PlayerInfo p, GameActionEnum action, int amnt)
         {
