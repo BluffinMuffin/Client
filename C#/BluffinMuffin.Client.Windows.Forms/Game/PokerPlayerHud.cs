@@ -74,10 +74,24 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             lblAction.Text = s;
         }
 
-        public void SetCards(GameCard c1, GameCard c2)
+        public void SetCards(params GameCard[] cards)
         {
-            picCard1.Card = c1;
-            picCard2.Card = c2;
+            if (cards.Length == 2)
+            {
+                picCard1.Card = cards[0];
+                picCard2.Visible = false;
+                picCard3.Card = cards[1];
+                picCard4.Visible = false;
+            }
+            else
+            {
+                picCard2.Visible = true;
+                picCard4.Visible = true;
+                picCard1.Card = cards[0];
+                picCard2.Card = cards[1];
+                picCard3.Card = cards[2];
+                picCard4.Card = cards[3];
+            }
         }
 
         public void SetMoney(int money)

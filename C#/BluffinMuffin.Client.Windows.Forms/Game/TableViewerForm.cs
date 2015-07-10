@@ -328,8 +328,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             SuspendLayout();
             var p = e.Player;
             var php = m_Huds[p.NoSeat];
-            if(p.HoleCards.Length == 2)
-                php.SetCards(ConvertToGameCard(p.HoleCards[0]), ConvertToGameCard(p.HoleCards[1]));
+            if(p.HoleCards.Any())
+                php.SetCards(p.HoleCards.Select(ConvertToGameCard).ToArray());
             else
                 php.SetCards(null, null);
             ResumeLayout();
@@ -529,7 +529,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 php.Main = (m_NoSeat == player.NoSeat);
                 php.Alive = player.State == PlayerStateEnum.Playing;
                 if (php.Alive)
-                    php.SetCards(ConvertToGameCard(cards[0]), ConvertToGameCard(cards[1]));
+                    php.SetCards(cards.Select(ConvertToGameCard).ToArray());
                 php.Visible = true;
                 php.SetDealerButtonVisible(seat.SeatAttributes.Contains(SeatAttributeEnum.Dealer));
             }

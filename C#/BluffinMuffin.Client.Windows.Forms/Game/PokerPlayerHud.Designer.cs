@@ -32,11 +32,15 @@
             this.lblName = new System.Windows.Forms.Label();
             this.lblAction = new System.Windows.Forms.Label();
             this.pnlCenter = new System.Windows.Forms.Panel();
+            this.picCard4 = new BluffinMuffin.Client.Windows.Forms.Game.CardPictureBox();
+            this.picCard3 = new BluffinMuffin.Client.Windows.Forms.Game.CardPictureBox();
             this.picBlind = new BluffinMuffin.Client.Windows.Forms.Game.ButtonPictureBox();
             this.picDealer = new BluffinMuffin.Client.Windows.Forms.Game.ButtonPictureBox();
             this.picCard2 = new BluffinMuffin.Client.Windows.Forms.Game.CardPictureBox();
             this.picCard1 = new BluffinMuffin.Client.Windows.Forms.Game.CardPictureBox();
             this.pnlCenter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picCard4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picCard3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDealer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCard2)).BeginInit();
@@ -81,6 +85,8 @@
             // pnlCenter
             // 
             this.pnlCenter.BackColor = System.Drawing.Color.White;
+            this.pnlCenter.Controls.Add(this.picCard4);
+            this.pnlCenter.Controls.Add(this.picCard3);
             this.pnlCenter.Controls.Add(this.picBlind);
             this.pnlCenter.Controls.Add(this.picDealer);
             this.pnlCenter.Controls.Add(this.picCard2);
@@ -90,11 +96,28 @@
             this.pnlCenter.Size = new System.Drawing.Size(123, 61);
             this.pnlCenter.TabIndex = 3;
             // 
+            // picCard4
+            // 
+            this.picCard4.BackColor = System.Drawing.Color.Transparent;
+            this.picCard4.Location = new System.Drawing.Point(60, 1);
+            this.picCard4.Name = "picCard4";
+            this.picCard4.Size = new System.Drawing.Size(40, 56);
+            this.picCard4.TabIndex = 5;
+            this.picCard4.TabStop = false;
+            // 
+            // picCard3
+            // 
+            this.picCard3.BackColor = System.Drawing.Color.Transparent;
+            this.picCard3.Location = new System.Drawing.Point(40, 1);
+            this.picCard3.Name = "picCard3";
+            this.picCard3.Size = new System.Drawing.Size(40, 56);
+            this.picCard3.TabIndex = 4;
+            this.picCard3.TabStop = false;
+            // 
             // picBlind
             // 
             this.picBlind.BackColor = System.Drawing.Color.Transparent;
-            this.picBlind.Button = BluffinMuffin.Client.Windows.Forms.Game.ButtonPictureBox.ButtonType.None;
-            this.picBlind.Location = new System.Drawing.Point(90, 28);
+            this.picBlind.Location = new System.Drawing.Point(94, 28);
             this.picBlind.Name = "picBlind";
             this.picBlind.Size = new System.Drawing.Size(30, 30);
             this.picBlind.TabIndex = 3;
@@ -103,8 +126,7 @@
             // picDealer
             // 
             this.picDealer.BackColor = System.Drawing.Color.Transparent;
-            this.picDealer.Button = BluffinMuffin.Client.Windows.Forms.Game.ButtonPictureBox.ButtonType.None;
-            this.picDealer.Location = new System.Drawing.Point(90, 0);
+            this.picDealer.Location = new System.Drawing.Point(94, 0);
             this.picDealer.Name = "picDealer";
             this.picDealer.Size = new System.Drawing.Size(30, 30);
             this.picDealer.TabIndex = 2;
@@ -113,8 +135,7 @@
             // picCard2
             // 
             this.picCard2.BackColor = System.Drawing.Color.Transparent;
-            this.picCard2.Card = null;
-            this.picCard2.Location = new System.Drawing.Point(48, 1);
+            this.picCard2.Location = new System.Drawing.Point(20, 1);
             this.picCard2.Name = "picCard2";
             this.picCard2.Size = new System.Drawing.Size(40, 56);
             this.picCard2.TabIndex = 1;
@@ -123,8 +144,7 @@
             // picCard1
             // 
             this.picCard1.BackColor = System.Drawing.Color.Transparent;
-            this.picCard1.Card = null;
-            this.picCard1.Location = new System.Drawing.Point(5, 1);
+            this.picCard1.Location = new System.Drawing.Point(0, 1);
             this.picCard1.Name = "picCard1";
             this.picCard1.Size = new System.Drawing.Size(40, 56);
             this.picCard1.TabIndex = 0;
@@ -143,6 +163,8 @@
             this.Name = "PlayerHud";
             this.Size = new System.Drawing.Size(121, 121);
             this.pnlCenter.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picCard4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picCard3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBlind)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDealer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCard2)).EndInit();
@@ -161,5 +183,7 @@
         private CardPictureBox picCard1;
         private ButtonPictureBox picBlind;
         private ButtonPictureBox picDealer;
+        private CardPictureBox picCard4;
+        private CardPictureBox picCard3;
     }
 }
