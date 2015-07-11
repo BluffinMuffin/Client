@@ -18,6 +18,8 @@ namespace BluffinMuffin.Client.DataTypes
         int AfterPlayerSat(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500);
         bool SitOut(PlayerInfo p);
 
+        void Discard(string[] cards);
+
         bool IsPlaying { get; }
     }
 }

@@ -64,7 +64,7 @@ namespace BluffinMuffin.Client.Protocol
         {
             lock (m_PokerTable)
             {
-                Observer.RaiseDiscardActionNeeded(e.Command.MinimumCardsToDiscard,e.Command.MaximumCardsToDiscard);
+                Observer.RaiseDiscardActionNeeded(m_PokerTable.Seats[m_TablePosition].Player, e.Command.MinimumCardsToDiscard,e.Command.MaximumCardsToDiscard);
             }
         }
 
@@ -333,6 +333,12 @@ namespace BluffinMuffin.Client.Protocol
             Send(new PlayerSitOutCommand() { TableId = m_NoPort, });
             return true;
         }
+
+        public void Discard(string[] cards)
+        {
+            Send(new PlayerDiscardActionCommand() {TableId = m_NoPort, CardsDiscarded = cards});
+        }
+
         #endregion Public Methods
 
         #region Private Methods

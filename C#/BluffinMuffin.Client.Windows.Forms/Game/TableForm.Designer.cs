@@ -37,6 +37,18 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             this.btnRaise = new System.Windows.Forms.Button();
             this.nudRaise = new System.Windows.Forms.NumericUpDown();
             this.btnSitOut = new System.Windows.Forms.Button();
+            this.grpDiscard = new System.Windows.Forms.GroupBox();
+            this.lblC5 = new System.Windows.Forms.Label();
+            this.lblC4 = new System.Windows.Forms.Label();
+            this.lblC3 = new System.Windows.Forms.Label();
+            this.lblC2 = new System.Windows.Forms.Label();
+            this.lblC1 = new System.Windows.Forms.Label();
+            this.chkC5 = new System.Windows.Forms.CheckBox();
+            this.chkC4 = new System.Windows.Forms.CheckBox();
+            this.chkC3 = new System.Windows.Forms.CheckBox();
+            this.chkC2 = new System.Windows.Forms.CheckBox();
+            this.chkC1 = new System.Windows.Forms.CheckBox();
+            this.btnDiscard = new System.Windows.Forms.Button();
             this.btnSitIn0 = new System.Windows.Forms.Button();
             this.btnSitIn1 = new System.Windows.Forms.Button();
             this.btnSitIn2 = new System.Windows.Forms.Button();
@@ -49,6 +61,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             this.btnSitIn9 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRaise)).BeginInit();
+            this.grpDiscard.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -58,6 +71,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             this.flowLayoutPanel1.Controls.Add(this.btnRaise);
             this.flowLayoutPanel1.Controls.Add(this.nudRaise);
             this.flowLayoutPanel1.Controls.Add(this.btnSitOut);
+            this.flowLayoutPanel1.Controls.Add(this.grpDiscard);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(874, 52);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -134,6 +148,136 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             this.btnSitOut.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnSitOut.UseVisualStyleBackColor = false;
             this.btnSitOut.Click += new System.EventHandler(this.btnSitOut_Click);
+            // 
+            // grpDiscard
+            // 
+            this.grpDiscard.BackColor = System.Drawing.Color.SandyBrown;
+            this.grpDiscard.Controls.Add(this.lblC5);
+            this.grpDiscard.Controls.Add(this.lblC4);
+            this.grpDiscard.Controls.Add(this.lblC3);
+            this.grpDiscard.Controls.Add(this.lblC2);
+            this.grpDiscard.Controls.Add(this.lblC1);
+            this.grpDiscard.Controls.Add(this.chkC5);
+            this.grpDiscard.Controls.Add(this.chkC4);
+            this.grpDiscard.Controls.Add(this.chkC3);
+            this.grpDiscard.Controls.Add(this.chkC2);
+            this.grpDiscard.Controls.Add(this.chkC1);
+            this.grpDiscard.Controls.Add(this.btnDiscard);
+            this.grpDiscard.Location = new System.Drawing.Point(3, 171);
+            this.grpDiscard.Name = "grpDiscard";
+            this.grpDiscard.Size = new System.Drawing.Size(137, 94);
+            this.grpDiscard.TabIndex = 6;
+            this.grpDiscard.TabStop = false;
+            this.grpDiscard.Text = "Discard";
+            this.grpDiscard.Visible = false;
+            // 
+            // lblC5
+            // 
+            this.lblC5.Location = new System.Drawing.Point(106, 36);
+            this.lblC5.Name = "lblC5";
+            this.lblC5.Size = new System.Drawing.Size(30, 23);
+            this.lblC5.TabIndex = 12;
+            this.lblC5.Text = "10S";
+            this.lblC5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblC4
+            // 
+            this.lblC4.Location = new System.Drawing.Point(81, 36);
+            this.lblC4.Name = "lblC4";
+            this.lblC4.Size = new System.Drawing.Size(30, 23);
+            this.lblC4.TabIndex = 11;
+            this.lblC4.Text = "10S";
+            this.lblC4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblC3
+            // 
+            this.lblC3.Location = new System.Drawing.Point(54, 36);
+            this.lblC3.Name = "lblC3";
+            this.lblC3.Size = new System.Drawing.Size(30, 23);
+            this.lblC3.TabIndex = 10;
+            this.lblC3.Text = "10S";
+            this.lblC3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblC2
+            // 
+            this.lblC2.Location = new System.Drawing.Point(27, 36);
+            this.lblC2.Name = "lblC2";
+            this.lblC2.Size = new System.Drawing.Size(30, 23);
+            this.lblC2.TabIndex = 9;
+            this.lblC2.Text = "10S";
+            this.lblC2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblC1
+            // 
+            this.lblC1.Location = new System.Drawing.Point(0, 36);
+            this.lblC1.Name = "lblC1";
+            this.lblC1.Size = new System.Drawing.Size(30, 23);
+            this.lblC1.TabIndex = 8;
+            this.lblC1.Text = "10S";
+            this.lblC1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // chkC5
+            // 
+            this.chkC5.AutoSize = true;
+            this.chkC5.Location = new System.Drawing.Point(113, 19);
+            this.chkC5.Name = "chkC5";
+            this.chkC5.Size = new System.Drawing.Size(15, 14);
+            this.chkC5.TabIndex = 7;
+            this.chkC5.UseVisualStyleBackColor = true;
+            this.chkC5.CheckedChanged += new System.EventHandler(this.chkDiscard_CheckedChanged);
+            // 
+            // chkC4
+            // 
+            this.chkC4.AutoSize = true;
+            this.chkC4.Location = new System.Drawing.Point(87, 19);
+            this.chkC4.Name = "chkC4";
+            this.chkC4.Size = new System.Drawing.Size(15, 14);
+            this.chkC4.TabIndex = 6;
+            this.chkC4.UseVisualStyleBackColor = true;
+            this.chkC4.CheckedChanged += new System.EventHandler(this.chkDiscard_CheckedChanged);
+            // 
+            // chkC3
+            // 
+            this.chkC3.AutoSize = true;
+            this.chkC3.Location = new System.Drawing.Point(61, 19);
+            this.chkC3.Name = "chkC3";
+            this.chkC3.Size = new System.Drawing.Size(15, 14);
+            this.chkC3.TabIndex = 5;
+            this.chkC3.UseVisualStyleBackColor = true;
+            this.chkC3.CheckedChanged += new System.EventHandler(this.chkDiscard_CheckedChanged);
+            // 
+            // chkC2
+            // 
+            this.chkC2.AutoSize = true;
+            this.chkC2.Location = new System.Drawing.Point(35, 19);
+            this.chkC2.Name = "chkC2";
+            this.chkC2.Size = new System.Drawing.Size(15, 14);
+            this.chkC2.TabIndex = 4;
+            this.chkC2.UseVisualStyleBackColor = true;
+            this.chkC2.CheckedChanged += new System.EventHandler(this.chkDiscard_CheckedChanged);
+            // 
+            // chkC1
+            // 
+            this.chkC1.AutoSize = true;
+            this.chkC1.Location = new System.Drawing.Point(9, 19);
+            this.chkC1.Name = "chkC1";
+            this.chkC1.Size = new System.Drawing.Size(15, 14);
+            this.chkC1.TabIndex = 3;
+            this.chkC1.UseVisualStyleBackColor = true;
+            this.chkC1.CheckedChanged += new System.EventHandler(this.chkDiscard_CheckedChanged);
+            // 
+            // btnDiscard
+            // 
+            this.btnDiscard.BackColor = System.Drawing.Color.SpringGreen;
+            this.btnDiscard.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDiscard.Location = new System.Drawing.Point(5, 64);
+            this.btnDiscard.Margin = new System.Windows.Forms.Padding(5);
+            this.btnDiscard.Name = "btnDiscard";
+            this.btnDiscard.Size = new System.Drawing.Size(126, 23);
+            this.btnDiscard.TabIndex = 2;
+            this.btnDiscard.Text = "DISCARD";
+            this.btnDiscard.UseVisualStyleBackColor = false;
+            this.btnDiscard.Click += new System.EventHandler(this.btnDiscard_Click);
             // 
             // btnSitIn0
             // 
@@ -317,6 +461,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             this.Controls.SetChildIndex(this.btnSitIn1, 0);
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudRaise)).EndInit();
+            this.grpDiscard.ResumeLayout(false);
+            this.grpDiscard.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -339,6 +485,18 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
         private Button btnSitIn7;
         private Button btnSitIn8;
         private Button btnSitIn9;
+        private GroupBox grpDiscard;
+        private Label lblC5;
+        private Label lblC4;
+        private Label lblC3;
+        private Label lblC2;
+        private Label lblC1;
+        private CheckBox chkC5;
+        private CheckBox chkC4;
+        private CheckBox chkC3;
+        private CheckBox chkC2;
+        private CheckBox chkC1;
+        private Button btnDiscard;
 
 
     }

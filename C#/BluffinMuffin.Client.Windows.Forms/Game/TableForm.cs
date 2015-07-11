@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using BluffinMuffin.Client.DataTypes;
 using BluffinMuffin.Client.DataTypes.EventHandling;
@@ -11,6 +13,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
 {
     public partial class TableForm : TableViewerForm
     {
+        private MinMaxEventArgs m_DiscardInfo;
+
         protected virtual int GetSitInMoneyAmount() { return 1500; }
 
         protected TableForm()
@@ -78,6 +82,94 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             m_Game.Observer.SitOutResponseReceived += OnSitOutResponseReceived;
             m_Game.Observer.SeatUpdated += OnGameGenerallyUpdated;
             m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
+            m_Game.Observer.DiscardActionNeeded += OnDiscardActionNeeded;
+        }
+
+        void OnDiscardActionNeeded(object sender, MinMaxEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<MinMaxEventArgs>(OnDiscardActionNeeded), new[] { sender, e });
+                return;
+            }
+            m_DiscardInfo = e;
+            string[] cards = e.Player.HoleCards.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            chkC1.Checked = false;
+            chkC2.Checked = false;
+            chkC3.Checked = false;
+            chkC4.Checked = false;
+            chkC5.Checked = false;
+            chkC1.Visible = false;
+            chkC2.Visible = false;
+            chkC3.Visible = false;
+            chkC4.Visible = false;
+            chkC5.Visible = false;
+            lblC1.Visible = false;
+            lblC2.Visible = false;
+            lblC3.Visible = false;
+            lblC4.Visible = false;
+            lblC5.Visible = false;
+            switch (cards.Length)
+            {
+                case 1:
+                    chkC3.Visible = true;
+                    lblC3.Visible = true;
+                    lblC3.Text = cards[0];
+                    break;
+                case 2:
+                    chkC2.Visible = true;
+                    lblC2.Visible = true;
+                    lblC2.Text = cards[0];
+                    chkC4.Visible = true;
+                    lblC4.Visible = true;
+                    lblC4.Text = cards[1];
+                    break;
+                case 3:
+                    chkC2.Visible = true;
+                    lblC2.Visible = true;
+                    lblC2.Text = cards[0];
+                    chkC3.Visible = true;
+                    lblC3.Visible = true;
+                    lblC3.Text = cards[1];
+                    chkC4.Visible = true;
+                    lblC4.Visible = true;
+                    lblC4.Text = cards[2];
+                    break;
+                case 4:
+                    chkC1.Visible = true;
+                    lblC1.Visible = true;
+                    lblC1.Text = cards[0];
+                    chkC2.Visible = true;
+                    lblC2.Visible = true;
+                    lblC2.Text = cards[1];
+                    chkC3.Visible = true;
+                    lblC3.Visible = true;
+                    lblC3.Text = cards[2];
+                    chkC4.Visible = true;
+                    lblC4.Visible = true;
+                    lblC4.Text = cards[3];
+                    break;
+                case 5:
+                    chkC1.Visible = true;
+                    lblC1.Visible = true;
+                    lblC1.Text = cards[0];
+                    chkC2.Visible = true;
+                    lblC2.Visible = true;
+                    lblC2.Text = cards[1];
+                    chkC3.Visible = true;
+                    lblC3.Visible = true;
+                    lblC3.Text = cards[2];
+                    chkC4.Visible = true;
+                    lblC4.Visible = true;
+                    lblC4.Text = cards[3];
+                    chkC5.Visible = true;
+                    lblC5.Visible = true;
+                    lblC5.Text = cards[4];
+                    break;
+            }
+            btnDiscard.Enabled = e.Minimum == 0;
+            grpDiscard.Visible = true;
         }
 
         void OnSitOutResponseReceived(bool success)
@@ -195,6 +287,20 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             DisableButtons();
             SitOutEnabled(false);
             m_Game.SitOut(null);
+        }
+
+        private void btnDiscard_Click(object sender, EventArgs e)
+        {
+            var chks = new[] { new KeyValuePair<CheckBox, Label>(chkC1, lblC1), new KeyValuePair<CheckBox, Label>(chkC2, lblC2), new KeyValuePair<CheckBox, Label>(chkC3, lblC3), new KeyValuePair<CheckBox, Label>(chkC4, lblC4), new KeyValuePair<CheckBox, Label>(chkC5, lblC5) };
+            string[] cardsToDiscard = chks.Where(x => x.Key.Checked).Select(x => x.Value.Text).ToArray();
+            grpDiscard.Visible = false;
+            m_Game.Discard(cardsToDiscard);
+        }
+
+        private void chkDiscard_CheckedChanged(object sender, EventArgs e)
+        {
+            var chks = new[] {chkC1, chkC2, chkC3, chkC4, chkC5};
+            btnDiscard.Enabled = chks.Count(x => x.Checked) >= m_DiscardInfo.Minimum && chks.Count(x => x.Checked) <= m_DiscardInfo.Maximum;
         }
     }
 }
