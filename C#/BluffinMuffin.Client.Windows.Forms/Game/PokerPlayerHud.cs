@@ -76,21 +76,53 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
 
         public void SetCards(params GameCard[] cards)
         {
-            if (cards.Length == 2)
+            picCard1.Visible = false;
+            picCard2.Visible = false;
+            picCard3.Visible = false;
+            picCard4.Visible = false;
+            picCard5.Visible = false;
+            switch (cards.Length)
             {
-                picCard1.Card = cards[0];
-                picCard2.Visible = false;
-                picCard3.Card = cards[1];
-                picCard4.Visible = false;
-            }
-            else
-            {
-                picCard2.Visible = true;
-                picCard4.Visible = true;
-                picCard1.Card = cards[0];
-                picCard2.Card = cards[1];
-                picCard3.Card = cards[2];
-                picCard4.Card = cards[3];
+                case 1:
+                    picCard3.Visible = true;
+                    picCard3.Card = cards[0];
+                    break;
+                case 2:
+                    picCard2.Visible = true;
+                    picCard2.Card = cards[0];
+                    picCard4.Visible = true;
+                    picCard4.Card = cards[1];
+                    break;
+                case 3:
+                    picCard2.Visible = true;
+                    picCard2.Card = cards[0];
+                    picCard3.Visible = true;
+                    picCard3.Card = cards[1];
+                    picCard4.Visible = true;
+                    picCard4.Card = cards[2];
+                    break;
+                case 4:
+                    picCard1.Visible = true;
+                    picCard1.Card = cards[0];
+                    picCard2.Visible = true;
+                    picCard2.Card = cards[1];
+                    picCard3.Visible = true;
+                    picCard3.Card = cards[2];
+                    picCard4.Visible = true;
+                    picCard4.Card = cards[3];
+                    break;
+                case 5:
+                    picCard1.Visible = true;
+                    picCard1.Card = cards[0];
+                    picCard2.Visible = true;
+                    picCard2.Card = cards[1];
+                    picCard3.Visible = true;
+                    picCard3.Card = cards[2];
+                    picCard4.Visible = true;
+                    picCard4.Card = cards[3];
+                    picCard5.Visible = true;
+                    picCard5.Card = cards[4];
+                    break;
             }
         }
 
