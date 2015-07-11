@@ -292,7 +292,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
         private void btnDiscard_Click(object sender, EventArgs e)
         {
             var chks = new[] { new KeyValuePair<CheckBox, Label>(chkC1, lblC1), new KeyValuePair<CheckBox, Label>(chkC2, lblC2), new KeyValuePair<CheckBox, Label>(chkC3, lblC3), new KeyValuePair<CheckBox, Label>(chkC4, lblC4), new KeyValuePair<CheckBox, Label>(chkC5, lblC5) };
-            string[] cardsToDiscard = chks.Where(x => x.Key.Checked).Select(x => x.Value.Text).ToArray();
+            string[] cardsToDiscard = chks.Where(x => x.Key.Checked).Select(x => x.Value.Text.Replace("T","10").ToUpper()).ToArray();
             grpDiscard.Visible = false;
             m_Game.Discard(cardsToDiscard);
         }
