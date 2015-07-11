@@ -483,7 +483,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             var p = e.Player;
-            if (ConvertToGameCard(p.HoleCards[0]).Id >= 0)
+            if (p.HoleCards.Any() && ConvertToGameCard(p.HoleCards[0]).Id >= 0)
                 WriteLine("==> Hole Card changed for " + p.Name + ": " + String.Join(" ", p.HoleCards));
         }
 
