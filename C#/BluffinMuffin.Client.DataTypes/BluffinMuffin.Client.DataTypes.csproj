@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventHandling\MinMaxEventArgs.cs" />
     <Compile Include="EventHandling\PokerGameObserver.cs" />
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />

@@ -42,10 +42,13 @@ namespace BluffinMuffin.Client.Protocol
         
         public event EventHandler<CommandEventArgs<TableInfoCommand>> TableInfoCommandReceived = delegate { };
 
-        
+
         public event EventHandler<CommandEventArgs<PlayerSitInResponse>> PlayerSitInResponseReceived = delegate { };
 
-        
+
         public event EventHandler<CommandEventArgs<PlayerSitOutResponse>> PlayerSitOutResponseReceived = delegate { };
+
+
+        public event EventHandler<CommandEventArgs<DiscardRoundStartedCommand>> DiscardRoundStartedCommandReceived = delegate { };
     }
 }

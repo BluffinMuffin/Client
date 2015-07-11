@@ -24,6 +24,7 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
         public event IntHandler SitInResponseReceived = delegate { };
         public event BooleanHandler SitOutResponseReceived = delegate { };
+        public event EventHandler<MinMaxEventArgs> DiscardActionNeeded = delegate { };
 
         public PokerGameObserver(IPokerGame game)
         {
@@ -69,6 +70,10 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         public void RaisePlayerActionNeeded(PlayerInfo p)
         {
             PlayerActionNeeded(m_Game, new PlayerInfoEventArgs(p));
+        }
+        public void RaiseDiscardActionNeeded(int min, int max)
+        {
+            DiscardActionNeeded(m_Game, new MinMaxEventArgs(min, max));
         }
         public void RaisePlayerWonPot(PlayerInfo p, int id, int amntWon, PokerHandEnum hand, string[] cards)
         {

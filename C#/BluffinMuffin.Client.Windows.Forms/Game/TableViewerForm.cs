@@ -125,6 +125,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             m_Game.Observer.PlayerJoined += OnPlayerJoined_Console;
             m_Game.Observer.SeatUpdated += OnSeatUpdated_Console;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot_Console;
+            m_Game.Observer.DiscardActionNeeded += OnDiscardActionNeeded_Console;
         }
 
         void OnGameBettingRoundEnded(object sender, EventArgs e)
@@ -419,6 +420,20 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             WriteLine("==> Game started");
+        }
+
+        void OnDiscardActionNeeded_Console(object sender, MinMaxEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<MinMaxEventArgs>(OnDiscardActionNeeded_Console), new[] { sender, e });
+                return;
+            }
+            bool isMandatory = e.Minimum > 0;
+            bool hasRange = e.Minimum < e.Maximum;
+            bool hasMany= e.Maximum > 1;
+            WriteLine("==> Discard round started. You " + (isMandatory ? "must" : "can") + " discard " + (hasRange ? "from " + e.Minimum + " to " + e.Maximum : e.Minimum.ToString()) + " card" + (hasMany ? "s" : ""));
         }
 
         void OnGameEnded_Console(object sender, EventArgs e)

@@ -208,22 +208,29 @@ namespace BluffinMuffin.Client.Protocol
                 }
 
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Run", "{0} RECV [{1}]", PlayerName, line);
-
-                AbstractCommand cmd = AbstractCommand.DeserializeCommand(line);
-                if (cmd.CommandType == BluffinCommandEnum.Game)
+                try
                 {
-                    var c = (IGameCommand) cmd;
+                    AbstractCommand cmd = AbstractCommand.DeserializeCommand(line);
+                    if (cmd.CommandType == BluffinCommandEnum.Game)
+                    {
+                        var c = (IGameCommand) cmd;
 
-                    //Be patient
-                    var count = 0;
-                    while (!m_Clients.ContainsKey(c.TableId) && (count++ < 5))
-                        Thread.Sleep(100);
+                        //Be patient
+                        var count = 0;
+                        while (!m_Clients.ContainsKey(c.TableId) && (count++ < 5))
+                            Thread.Sleep(100);
 
-                    if (m_Clients.ContainsKey(c.TableId))
-                        m_Clients[c.TableId].Incoming(line);
+                        if (m_Clients.ContainsKey(c.TableId))
+                            m_Clients[c.TableId].Incoming(line);
+                    }
+                    else
+                        m_Incoming.Enqueue(line);
+
                 }
-                else
-                    m_Incoming.Enqueue(line);
+                catch
+                {
+                    LogManager.Log(LogLevel.ErrorHigh, "LobbyTcpClient.Run", "{0} RECV UNKNOWN COMMAND", PlayerName);
+                }
             }
         }
 

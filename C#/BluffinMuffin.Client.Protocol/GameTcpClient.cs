@@ -54,9 +54,18 @@ namespace BluffinMuffin.Client.Protocol
             m_CommandObserver.PlayerWonPotCommandReceived += OnPlayerWonPotCommandReceived;
             m_CommandObserver.TableClosedCommandReceived += OnTableClosedCommandReceived;
             m_CommandObserver.TableInfoCommandReceived += OnTableInfoCommandReceived;
+            m_CommandObserver.DiscardRoundStartedCommandReceived += OnDiscardRoundStartedCommandReceived;
 
             m_CommandObserver.PlayerSitInResponseReceived += OnPlayerSitInResponseReceived;
             m_CommandObserver.PlayerSitOutResponseReceived += OnPlayerSitOutResponseReceived;
+        }
+
+        void OnDiscardRoundStartedCommandReceived(object sender, CommandEventArgs<DiscardRoundStartedCommand> e)
+        {
+            lock (m_PokerTable)
+            {
+                Observer.RaiseDiscardActionNeeded(e.Command.MinimumCardsToDiscard,e.Command.MaximumCardsToDiscard);
+            }
         }
 
         private void OnCommandSended(object sender, KeyEventArgs<string> e)
