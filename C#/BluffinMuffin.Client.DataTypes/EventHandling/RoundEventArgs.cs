@@ -1,5 +1,4 @@
 ﻿using System;
-using BluffinMuffin.Protocol.DataTypes.Enums;
 
 namespace BluffinMuffin.Client.DataTypes.EventHandling
 {

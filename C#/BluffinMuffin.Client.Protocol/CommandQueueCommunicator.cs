@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Com.Ericmas001.Net.Protocol;
+﻿using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Util;
 using AbstractCommand = BluffinMuffin.Protocol.AbstractCommand;
 
