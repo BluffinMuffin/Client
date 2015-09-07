@@ -12,8 +12,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
 
         public void SetBlinds( int bigblind )
         {
-            lblSmallBlind.Text = String.Format("${0}", bigblind / 2);
-            lblBigBlind.Text = String.Format("${0}", bigblind);
+            lblSmallBlind.Text = string.Format("${0}", bigblind / 2);
+            lblBigBlind.Text = string.Format("${0}", bigblind);
         }
     }
 }

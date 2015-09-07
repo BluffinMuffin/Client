@@ -32,7 +32,7 @@ namespace BluffinMuffin.Client.Menu
 
         private void txtUsername_TextChanged(object sender, EventArgs e)
         {
-            btnQuickMode.Enabled = !String.IsNullOrEmpty(txtUsername.Text);
+            btnQuickMode.Enabled = !string.IsNullOrEmpty(txtUsername.Text);
         }
     }
 }

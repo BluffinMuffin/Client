@@ -15,7 +15,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
         readonly LobbyTypeEnum m_LobbyType;
         readonly GameTypeEnum m_GameType;
         readonly IEnumerable<RuleInfo> m_Rules;
-        String CurrentVariant { get { return lstVariant.SelectedItem.ToString(); } }
+        string CurrentVariant { get { return lstVariant.SelectedItem.ToString(); } }
         RuleInfo CurrentRule { get { return m_Rules.First(r => r.Name == CurrentVariant); } }
         public CreateTableTabControl(string playerName, LobbyTypeEnum lobby, GameTypeEnum gameType, IEnumerable<RuleInfo> rules)
         {
@@ -189,9 +189,9 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
             var moneyUnit = (int)nudMoneyUnit.Value;
             var minBuyIn = moneyUnit * 20;
             var maxBuyIn = moneyUnit * 100;
-            lblGameSize.Text = String.Format("${0} / ${1}", moneyUnit, moneyUnit * 2);
-            lblMinimumBuyIn.Text = String.Format("${0}", minBuyIn);
-            lblMaximumBuyIn.Text = String.Format("(${0})", maxBuyIn);
+            lblGameSize.Text = string.Format("${0} / ${1}", moneyUnit, moneyUnit * 2);
+            lblMinimumBuyIn.Text = string.Format("${0}", minBuyIn);
+            lblMaximumBuyIn.Text = string.Format("(${0})", maxBuyIn);
             ucAnte.SetAnte(moneyUnit);
             ucBlinds.SetBlinds(moneyUnit);
             nudStartingAmount.Minimum = minBuyIn;

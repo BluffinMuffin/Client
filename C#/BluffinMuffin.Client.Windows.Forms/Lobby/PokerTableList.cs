@@ -143,7 +143,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
 
             }
         }
-        private bool JoinTable(int id, String tableName)
+        private bool JoinTable(int id, string tableName)
         {
             var gui = TableFormFactory.ObtainGui();
             m_Server.JoinTable(id, tableName, gui);

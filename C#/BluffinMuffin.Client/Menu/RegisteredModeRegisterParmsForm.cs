@@ -19,7 +19,7 @@ namespace BluffinMuffin.Client.Menu
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
-            btnRegister.Enabled = !String.IsNullOrEmpty(txtUsername.Text) && !String.IsNullOrEmpty(txtPassword.Text) && !String.IsNullOrEmpty(txtPasswordConfirm.Text) && !String.IsNullOrEmpty(txtEmail.Text) && !String.IsNullOrEmpty(txtEmailConfirm.Text) && !String.IsNullOrEmpty(txtDisplayName.Text);
+            btnRegister.Enabled = !string.IsNullOrEmpty(txtUsername.Text) && !string.IsNullOrEmpty(txtPassword.Text) && !string.IsNullOrEmpty(txtPasswordConfirm.Text) && !string.IsNullOrEmpty(txtEmail.Text) && !string.IsNullOrEmpty(txtEmailConfirm.Text) && !string.IsNullOrEmpty(txtDisplayName.Text);
         }
 
         private void btnRegister_Click(object sender, EventArgs e)

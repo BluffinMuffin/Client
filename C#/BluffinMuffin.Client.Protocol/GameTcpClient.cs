@@ -22,7 +22,7 @@ namespace BluffinMuffin.Client.Protocol
         private int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
-        private bool m_IsGameStarted;
+
         #endregion Fields
 
         #region Properties
@@ -184,7 +184,7 @@ namespace BluffinMuffin.Client.Protocol
 
                 if (p != null)
                 {
-                    SetPlayerVisibility(p, cmd.PlayerState, cmd.Cards.Select(id => ConvertToGameCard(id)).ToList(), cmd.NbHiddenCards);
+                    SetPlayerVisibility(p, cmd.PlayerState, cmd.FaceUpCards.Select(ConvertToGameCard), cmd.FaceDownCards.Select(ConvertToGameCard));
 
                     Observer.RaisePlayerHoleCardsChanged(p);
                 }
@@ -290,7 +290,7 @@ namespace BluffinMuffin.Client.Protocol
         {
             lock (m_PokerTable)
             {
-                m_IsGameStarted = cmd.GameHasStarted;
+                IsPlaying = cmd.GameHasStarted;
                 InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
                 SetCards(cmd.BoardCards);
                 m_PokerTable.Params = cmd.Params;
@@ -361,7 +361,7 @@ namespace BluffinMuffin.Client.Protocol
 
         private GameCard ConvertToGameCard(string c)
         {
-            return new GameCard(String.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
+            return new GameCard(string.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
         }
 
         private void SetCards(IEnumerable<string> cardsId)
@@ -370,19 +370,16 @@ namespace BluffinMuffin.Client.Protocol
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
         }
 
-        private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, List<GameCard> cards, int nbHiddenCards)
+        private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, IEnumerable<GameCard> faceUpCards, IEnumerable<GameCard> faceDownCards)
         {
             p.State = pState;
-            p.Cards = cards.Select(x => x.ToString()).ToArray();
-            p.NbHiddenCards = nbHiddenCards;
+            p.FaceUpCards = faceUpCards.Select(x => x.ToString()).ToArray();
+            p.FaceDownCards = faceDownCards.Select(x => x.ToString()).ToArray();
         }
         #endregion Private Methods
 
 
-        public bool IsPlaying
-        {
-            get { return m_IsGameStarted; }
-        }
+        public bool IsPlaying { get; private set; }
 
         public override void Send(AbstractCommand command)
         {

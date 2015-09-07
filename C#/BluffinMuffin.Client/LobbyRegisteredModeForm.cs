@@ -19,7 +19,7 @@ namespace BluffinMuffin.Client
             tableList.TableFormFactory = this;
             tableList.SetServer(m_Server);
             Text = server.User.DisplayName + Resources.LobbyRegisteredModeForm_LobbyRegisteredModeForm_Tild + lblTitle.Text;
-            lblServer.Text = String.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
+            lblServer.Text = string.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
         }
 
 
@@ -40,8 +40,8 @@ namespace BluffinMuffin.Client
         {
             var u = m_Server.User;
             m_Server.RefreshUserInfo(u.Username);
-            lblAccount.Text = String.Format("{0} ( {1}, {2} )", u.DisplayName, u.Username, u.Email);
-            lblMoney.Text = String.Format("{0}", (int)u.TotalMoney);
+            lblAccount.Text = string.Format("{0} ( {1}, {2} )", u.DisplayName, u.Username, u.Email);
+            lblMoney.Text = string.Format("{0}", (int)u.TotalMoney);
         }
 
         private void AllowJoinOrLeave()
