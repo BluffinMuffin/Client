@@ -210,7 +210,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                     nudRaise.Minimum = min;
                     nudRaise.Maximum = p.MoneyAmnt;
                     nudRaise.Value = min;
-                    nudRaise.Increment = min;
+                    nudRaise.Increment = table.MinimumRaiseAmount;
                 }
             }
         }
