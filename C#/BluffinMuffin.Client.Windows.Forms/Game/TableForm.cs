@@ -94,7 +94,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             m_DiscardInfo = e;
-            string[] cards = e.Player.HoleCards.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            string[] cards = e.Player.Cards.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             chkC1.Checked = false;
             chkC2.Checked = false;
             chkC3.Checked = false;

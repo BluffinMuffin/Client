@@ -1,4 +1,5 @@
 ﻿using BluffinMuffin.DataTypes;
+using BluffinMuffin.Protocol.Lobby;
 using BluffinMuffin.Protocol.Lobby.RegisteredMode;
 
 namespace BluffinMuffin.Client.Protocol
@@ -15,7 +16,7 @@ namespace BluffinMuffin.Client.Protocol
         {
         }
 
-        protected override bool GetJoinedSeat(int noPort, string player)
+        protected override JoinTableResponse GetJoinedSeat(int noPort, string player)
         {
             return base.GetJoinedSeat(noPort, m_User.Username);
         }

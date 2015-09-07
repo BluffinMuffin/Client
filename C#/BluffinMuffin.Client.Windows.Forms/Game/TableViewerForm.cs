@@ -329,8 +329,9 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             SuspendLayout();
             var p = e.Player;
             var php = m_Huds[p.NoSeat];
-            if(p.HoleCards.Any())
-                php.SetCards(p.HoleCards.Select(ConvertToGameCard).ToArray());
+            var cards = p.Cards.Concat(Enumerable.Range(0, p.NbHiddenCards).Select(x => "??")).ToArray();
+            if (cards.Any())
+                php.SetCards(cards.Select(ConvertToGameCard).ToArray());
             else
                 php.SetCards(null, null);
             ResumeLayout();
@@ -483,15 +484,16 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             var p = e.Player;
-            if (p.HoleCards.Any() && ConvertToGameCard(p.HoleCards[0]).Id >= 0)
-                WriteLine("==> Hole Card changed for " + p.Name + ": " + String.Join(" ", p.HoleCards));
+            var cards = p.Cards.Concat(Enumerable.Range(0, p.NbHiddenCards).Select(x => "??")).ToArray();
+            if (cards.Any() && ConvertToGameCard(cards[0]).Id >= 0)
+                WriteLine("==> Hole Card changed for " + p.Name + ": " + String.Join(" ", cards));
         }
 
         void OnPlayerJoined_Console(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
-                // We're not in the UI thread, so we need to call BeginInvoke
+                // We're not in the UI thread, so we need to call BeginInvoke 
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined_Console), new[] { sender, e });
                 return;
             }
@@ -538,7 +540,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 var player = seat.Player;
                 php.PlayerName = player.Name;
                 php.DoAction(GameActionEnum.DoNothing);
-                var cards = (player.HoleCards??new []{"--","--"}).ToArray();
+                var cards = (player.Cards??new []{"--","--"}).Concat(Enumerable.Range(0, player.NbHiddenCards).Select(x => "??")).ToArray();
                 php.SetMoney(player.MoneySafeAmnt);
                 php.SetSleeping();
                 php.Main = (m_NoSeat == player.NoSeat);

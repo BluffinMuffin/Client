@@ -68,7 +68,7 @@ namespace BluffinMuffin.Client.DataTypes
         {
             get
             {
-                return Pots.Select(pot => pot.Amount).Union(Enumerable.Repeat(0, Params.MaxPlayers - Pots.Count));
+                return Pots.Select(pot => pot.Amount).Concat(Enumerable.Repeat(0, Params.MaxPlayers - Pots.Count));
             }
         }
 
