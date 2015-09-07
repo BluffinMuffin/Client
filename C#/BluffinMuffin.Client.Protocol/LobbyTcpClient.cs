@@ -188,7 +188,7 @@ namespace BluffinMuffin.Client.Protocol
 
         public IEnumerable<RuleInfo> GetSupportedRules()
         {
-            var cmd = new CheckCompatibilityCommand() {ImplementedProtocolVersion="2.1.0"};
+            var cmd = new CheckCompatibilityCommand() {ImplementedProtocolVersion="2.3.0"};
             Send(cmd);
 
             return WaitAndReceive<CheckCompatibilityResponse>().Rules;
