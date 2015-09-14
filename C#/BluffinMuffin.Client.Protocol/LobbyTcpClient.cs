@@ -187,12 +187,12 @@ namespace BluffinMuffin.Client.Protocol
             return WaitAndReceive<JoinTableResponse>();
         }
 
-        public IEnumerable<RuleInfo> GetSupportedRules()
+        public IEnumerable<GameInfo> GetSupportedRules()
         {
             var cmd = new CheckCompatibilityCommand() {ImplementedProtocolVersion="3.0.0"};
             Send(cmd);
 
-            return WaitAndReceive<CheckCompatibilityResponse>().Rules;
+            return WaitAndReceive<CheckCompatibilityResponse>().AvailableGames;
         }
 
         protected override void Run()
