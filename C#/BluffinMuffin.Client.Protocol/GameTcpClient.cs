@@ -159,7 +159,7 @@ namespace BluffinMuffin.Client.Protocol
             {
                 var cmd = e.Command;
                 m_PokerTable.People.Clear();
-
+                m_PokerTable.SetCards();
                 for (var i = 0; i < m_PokerTable.Params.MaxPlayers; ++i)
                 {
                     m_PokerTable.SetSeat(cmd.Seats[i]);
@@ -366,8 +366,7 @@ namespace BluffinMuffin.Client.Protocol
 
         private void SetCards(IEnumerable<string> cardsId)
         {
-            var cards = cardsId.Select(ConvertToGameCard).ToArray();
-            m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
+            m_PokerTable.SetCards(cardsId.Select(ConvertToGameCard).ToArray());
         }
 
         private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, IEnumerable<GameCard> faceUpCards, IEnumerable<GameCard> faceDownCards)

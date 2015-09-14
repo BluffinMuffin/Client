@@ -166,10 +166,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             foreach (var p in table.Players)
                 m_Huds[p.NoSeat].Alive = true;
             var i = 0;
-            for (; i < 5 && table.Cards[i].Id != GameCard.NoCard.Id; ++i)
+            for (; i < table.Cards.Length; ++i)
                 m_Board[i].Card = table.Cards[i];
             for (; i < 5; ++i)
-                m_Board[i].Card = GameCard.Hidden;
+                m_Board[i].Card = GameCard.NoCard;
             ResumeLayout();
         }
 
@@ -248,10 +248,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 }
 
                 var j = 0;
-                for (; j < 5 && table.Cards[j].Id != GameCard.NoCard.Id; ++j)
+                for (; j < table.Cards.Length; ++j)
                     m_Board[j].Card = table.Cards[j];
                 for (; j < 5; ++j)
-                    m_Board[j].Card = m_Game.IsPlaying ? GameCard.Hidden : GameCard.NoCard;
+                    m_Board[j].Card = GameCard.NoCard;
 
                 foreach (var si in table.Seats)
                 {
