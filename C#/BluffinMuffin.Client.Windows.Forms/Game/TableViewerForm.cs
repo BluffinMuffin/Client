@@ -150,6 +150,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 m_Huds[i].DoAction(GameActionEnum.DoNothing);
                 m_Bets[i].Text = "";
             }
+
+            if (table.Params.Options.OptionType == GameTypeEnum.StudPoker)
+                m_Huds.ToList().ForEach(x => x.SetNoBlind());
+
             ResumeLayout();
         }
 
@@ -165,6 +169,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             var table = m_Game.Table;
             foreach (var p in table.Players)
                 m_Huds[p.NoSeat].Alive = true;
+
             var i = 0;
             for (; i < table.Cards.Length; ++i)
                 m_Board[i].Card = table.Cards[i];
@@ -264,6 +269,11 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                     m_Bets[i].Text = table.Seats[i].IsEmpty || table.Seats[i].Player.MoneyBetAmnt == 0 ? "" : "$" + table.Seats[i].Player.MoneyBetAmnt;
                 }
 
+                if (table.Params.Options.OptionType == GameTypeEnum.StudPoker)
+                {
+                    //Set FirstTalker Icon
+                    table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.FirstTalker)).ToList().ForEach(x => m_Huds[x.NoSeat].SetFirstTalker());
+                }
                 //Set Small Blind Icon
                 table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetSmallBlind());
 

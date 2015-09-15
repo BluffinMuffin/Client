@@ -138,8 +138,11 @@ namespace BluffinMuffin.Client.Protocol
             {
                 var cmd = e.Command;
                 SetCards(cmd.Cards);
+                foreach (var seat in e.Command.Seats)
+                    m_PokerTable.Seats[seat.NoSeat].SeatAttributes = seat.SeatAttributes;
 
                 Observer.RaiseGameBettingRoundStarted(cmd.BettingRoundId);
+                Observer.RaiseGameGenerallyUpdated();
             }
         }
 

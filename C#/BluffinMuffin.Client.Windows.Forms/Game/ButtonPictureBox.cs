@@ -11,7 +11,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             None,
             Dealer,
             SmallBlind,
-            BigBlind
+            BigBlind,
+            FirstTalker
         }
         private ButtonType m_Button;
         public ButtonType Button
@@ -37,6 +38,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 case ButtonType.Dealer: Image = Resources.dealer; break;
                 case ButtonType.SmallBlind: Image = Resources.small_blind; break;
                 case ButtonType.BigBlind: Image = Resources.big_blind; break;
+                case ButtonType.FirstTalker: Image = Resources.firstTalker; break;
             }
         }
     }
