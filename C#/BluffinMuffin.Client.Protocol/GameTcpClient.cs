@@ -234,13 +234,15 @@ namespace BluffinMuffin.Client.Protocol
                 var cmd = e.Command;
                 var ps = m_PokerTable.Seats[cmd.NoSeat];
 
-                if (!ps.IsEmpty)
-                {
-                    m_PokerTable.ChangeCurrentPlayerTo(ps);
-                    m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaiseAmount;
+                if (ps.IsEmpty)
+                    return;
 
-                    Observer.RaisePlayerActionNeeded(ps.Player);
-                }
+                m_PokerTable.ChangeCurrentPlayerTo(ps);
+                m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaiseAmount;
+                m_PokerTable.CanFold = e.Command.CanFold;
+                m_PokerTable.HigherBet = ps.Player.MoneyBetAmnt + e.Command.AmountNeeded;
+
+                Observer.RaisePlayerActionNeeded(ps.Player);
             }
         }
 

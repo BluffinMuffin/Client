@@ -6,6 +6,7 @@ namespace BluffinMuffin.Client.Protocol
 {
     class DummyTable : TableInfo
     {
+
         /// <summary>
         /// Sets the cards on the table
         /// </summary>

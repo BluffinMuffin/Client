@@ -17,6 +17,7 @@ namespace BluffinMuffin.Client.DataTypes
         #endregion Fields
 
         #region Properties
+        public bool CanFold { get; set; } = true;
         /// <summary>
         /// Contains all the rules of the current game
         /// </summary>

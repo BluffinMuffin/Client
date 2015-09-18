@@ -199,7 +199,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             var table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
-                EnableButton(btnFold);
+                if(m_Game.Table.CanFold)
+                    EnableButton(btnFold);
                 SetCallButtonName(p);
                 EnableButton(btnCall);
                 if (table.HigherBet < p.MoneyAmnt)
