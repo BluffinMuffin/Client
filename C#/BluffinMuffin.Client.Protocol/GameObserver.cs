@@ -22,7 +22,7 @@ namespace BluffinMuffin.Client.Protocol
         public event EventHandler<CommandEventArgs<PlayerHoleCardsChangedCommand>> PlayerHoleCardsChangedCommandReceived = delegate { };
 
         
-        public event EventHandler<CommandEventArgs<PlayerJoinedCommand>> PlayerJoinedCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<GameMessageCommand>> GameMessageCommandReceived = delegate { };
 
         
         public event EventHandler<CommandEventArgs<SeatUpdatedCommand>> SeatUpdatedCommandReceived = delegate { };

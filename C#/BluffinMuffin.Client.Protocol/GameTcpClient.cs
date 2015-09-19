@@ -6,6 +6,7 @@ using BluffinMuffin.Client.DataTypes.EventHandling;
 using BluffinMuffin.Protocol;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.DataTypes.Options;
 using BluffinMuffin.Protocol.Game;
 using BluffinMuffin.Protocol.Lobby;
 using Com.Ericmas001.Games;
@@ -48,7 +49,7 @@ namespace BluffinMuffin.Client.Protocol
             m_CommandObserver.GameEndedCommandReceived += OnGameEndedCommandReceived;
             m_CommandObserver.GameStartedCommandReceived += OnGameStartedCommandReceived;
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += OnPlayerHoleCardsChangedCommandReceived;
-            m_CommandObserver.PlayerJoinedCommandReceived += OnPlayerJoinedCommandReceived;
+            m_CommandObserver.GameMessageCommandReceived += OnGameMessageCommandReceived;
             m_CommandObserver.SeatUpdatedCommandReceived += OnSeatUpdatedCommandReceived;
             m_CommandObserver.PlayerTurnBeganCommandReceived += OnPlayerTurnBeganCommandReceived;
             m_CommandObserver.PlayerTurnEndedCommandReceived += OnPlayerTurnEndedCommandReceived;
@@ -195,16 +196,19 @@ namespace BluffinMuffin.Client.Protocol
         }
 
 
-        void OnPlayerJoinedCommandReceived(object sender, CommandEventArgs<PlayerJoinedCommand> e)
+        void OnGameMessageCommandReceived(object sender, CommandEventArgs<GameMessageCommand> e)
         {
             lock (m_PokerTable)
             {
-                var cmd = e.Command;
-                var p = new PlayerInfo() { Name = cmd.PlayerName };
+                if (e.Command.Info.OptionType == GameMessageEnum.PlayerJoined)
+                {
+                    var info = (GameMessageOptionPlayerJoined) e.Command.Info;
+                    var p = new PlayerInfo() {Name = info.PlayerName};
 
-                m_PokerTable.JoinTable(p);
+                    m_PokerTable.JoinTable(p);
+                }
 
-                Observer.RaisePlayerJoined(p);
+                Observer.RaiseGameMessage(e.Command.Info);
             }
         }
 

@@ -122,7 +122,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated_Console;
             m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken_Console;
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged_Console;
-            m_Game.Observer.PlayerJoined += OnPlayerJoined_Console;
+            m_Game.Observer.GameMessageReceived += OnGameMessageReceived_Console;
             m_Game.Observer.SeatUpdated += OnSeatUpdated_Console;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot_Console;
             m_Game.Observer.DiscardActionNeeded += OnDiscardActionNeeded_Console;
@@ -457,6 +457,17 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             WriteLine("==> End of the Game");
         }
 
+        private void OnGameMessageReceived_Console(object sender, GameMessageOptionEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<GameMessageOptionEventArgs>(OnGameMessageReceived_Console), sender, e);
+                return;
+            }
+            WriteLine("==> " + e.Info.BuildMessage());
+        }
+
         void OnGameGenerallyUpdated_Console(object sender, EventArgs e)
         {
             if (InvokeRequired)
@@ -495,17 +506,6 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             var p = e.Player;
             if (p.Cards.Any() && ConvertToGameCard(p.Cards[0]).Id >= 0)
                 WriteLine("==> Hole Card changed for " + p.Name + ": " + string.Join(" ", p.Cards));
-        }
-
-        void OnPlayerJoined_Console(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke 
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined_Console), new[] { sender, e });
-                return;
-            }
-            WriteLine(e.Player.Name + " joined the table");
         }
 
         void OnSeatUpdated_Console(object sender, SeatEventArgs e)
