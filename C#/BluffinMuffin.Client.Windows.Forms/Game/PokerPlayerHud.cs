@@ -141,6 +141,11 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             picBlind.Button = ButtonPictureBox.ButtonType.SmallBlind;
         }
 
+        public void SetFirstTalker()
+        {
+            picBlind.Button = ButtonPictureBox.ButtonType.FirstTalker;
+        }
+
         public void SetBigBlind()
         {
             picBlind.Button = ButtonPictureBox.ButtonType.BigBlind;

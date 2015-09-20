@@ -10,7 +10,6 @@ namespace BluffinMuffin.Client.DataTypes
     public class TableInfo
     {
         #region Fields
-        protected readonly GameCard[] m_Cards = new GameCard[5];
         protected SeatInfo[] m_Seats;
         private readonly List<PlayerInfo> m_People = new List<PlayerInfo>();
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
@@ -18,6 +17,7 @@ namespace BluffinMuffin.Client.DataTypes
         #endregion Fields
 
         #region Properties
+        public bool CanFold { get; set; } = true;
         /// <summary>
         /// Contains all the rules of the current game
         /// </summary>
@@ -43,18 +43,7 @@ namespace BluffinMuffin.Client.DataTypes
         /// <summary>
         /// Cards on the Board
         /// </summary>
-        public GameCard[] Cards
-        {
-            get { return m_Cards.Select(c => c ?? GameCard.NoCard).ToArray(); }
-            protected set
-            {
-                if (value != null && value.Length == 5)
-                {
-                    for (var i = 0; i < 5; ++i)
-                        m_Cards[i] = value[i];
-                }
-            }
-        }
+        public GameCard[] Cards { get; set; }
 
         /// <summary>
         /// List of MoneyPots currently on the table. There should always have at least one MoneyPot
@@ -68,7 +57,7 @@ namespace BluffinMuffin.Client.DataTypes
         {
             get
             {
-                return Pots.Select(pot => pot.Amount).Union(Enumerable.Repeat(0, Params.MaxPlayers - Pots.Count));
+                return Pots.Select(pot => pot.Amount).Concat(Enumerable.Repeat(0, Params.MaxPlayers - Pots.Count));
             }
         }
 
@@ -192,7 +181,7 @@ namespace BluffinMuffin.Client.DataTypes
 
         public virtual void InitTable()
         {
-            Cards = new GameCard[5];
+            Cards = new GameCard[0];
             NbPlayed = 0;
             TotalPotAmnt = 0;
             m_Pots.Clear();

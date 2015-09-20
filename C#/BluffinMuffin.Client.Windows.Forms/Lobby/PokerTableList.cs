@@ -60,8 +60,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
                 datTables.Rows[i].Cells[1].Value = info.Params.TableName;
-                datTables.Rows[i].Cells[2].Value = type + " - " + EnumFactory<LimitTypeEnum>.ToString(info.Params.Limit.OptionType);
-                datTables.Rows[i].Cells[3].Value = info.Params.MoneyUnit;
+                datTables.Rows[i].Cells[2].Value = type + " - " + EnumFactory<LimitTypeEnum>.ToString(info.Params.Limit);
+                datTables.Rows[i].Cells[3].Value = info.Params.GameSize;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Params.MaxPlayers;
             }
             if (datTables.RowCount > 0 && datTables.SelectedRows.Count > 0)
@@ -143,7 +143,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
 
             }
         }
-        private bool JoinTable(int id, String tableName)
+        private bool JoinTable(int id, string tableName)
         {
             var gui = TableFormFactory.ObtainGui();
             m_Server.JoinTable(id, tableName, gui);

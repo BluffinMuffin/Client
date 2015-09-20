@@ -58,6 +58,7 @@
     <Compile Include="EventHandling\MinMaxEventArgs.cs" />
     <Compile Include="EventHandling\PokerGameObserver.cs" />
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
+    <Compile Include="EventHandling\GameMessageOptionEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />
     <Compile Include="IPokerGame.cs" />
     <Compile Include="IPokerViewer.cs" />

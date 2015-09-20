@@ -6,7 +6,9 @@ using BluffinMuffin.Client.DataTypes.EventHandling;
 using BluffinMuffin.Protocol;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.DataTypes.Options;
 using BluffinMuffin.Protocol.Game;
+using BluffinMuffin.Protocol.Lobby;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Util;
@@ -21,7 +23,7 @@ namespace BluffinMuffin.Client.Protocol
         private int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
-        private bool m_IsGameStarted;
+
         #endregion Fields
 
         #region Properties
@@ -47,13 +49,12 @@ namespace BluffinMuffin.Client.Protocol
             m_CommandObserver.GameEndedCommandReceived += OnGameEndedCommandReceived;
             m_CommandObserver.GameStartedCommandReceived += OnGameStartedCommandReceived;
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += OnPlayerHoleCardsChangedCommandReceived;
-            m_CommandObserver.PlayerJoinedCommandReceived += OnPlayerJoinedCommandReceived;
+            m_CommandObserver.GameMessageCommandReceived += OnGameMessageCommandReceived;
             m_CommandObserver.SeatUpdatedCommandReceived += OnSeatUpdatedCommandReceived;
             m_CommandObserver.PlayerTurnBeganCommandReceived += OnPlayerTurnBeganCommandReceived;
             m_CommandObserver.PlayerTurnEndedCommandReceived += OnPlayerTurnEndedCommandReceived;
             m_CommandObserver.PlayerWonPotCommandReceived += OnPlayerWonPotCommandReceived;
             m_CommandObserver.TableClosedCommandReceived += OnTableClosedCommandReceived;
-            m_CommandObserver.TableInfoCommandReceived += OnTableInfoCommandReceived;
             m_CommandObserver.DiscardRoundStartedCommandReceived += OnDiscardRoundStartedCommandReceived;
 
             m_CommandObserver.PlayerSitInResponseReceived += OnPlayerSitInResponseReceived;
@@ -138,8 +139,11 @@ namespace BluffinMuffin.Client.Protocol
             {
                 var cmd = e.Command;
                 SetCards(cmd.Cards);
+                foreach (var seat in e.Command.Seats)
+                    m_PokerTable.Seats[seat.NoSeat].SeatAttributes = seat.SeatAttributes;
 
                 Observer.RaiseGameBettingRoundStarted(cmd.BettingRoundId);
+                Observer.RaiseGameGenerallyUpdated();
             }
         }
 
@@ -158,13 +162,19 @@ namespace BluffinMuffin.Client.Protocol
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
-                
+                m_PokerTable.People.Clear();
+                m_PokerTable.SetCards();
+                for (var i = 0; i < m_PokerTable.Params.MaxPlayers; ++i)
+                {
+                    m_PokerTable.SetSeat(cmd.Seats[i]);
+                    m_PokerTable.People.Add(m_PokerTable.Seats[i].Player);
+
+                }
+
                 if (m_TablePosition >= 0 && cmd.NeededBlindAmount > 0)
                     Send(new PlayerPlayMoneyCommand() { AmountPlayed = cmd.NeededBlindAmount });
 
-                //if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.BigBlind))
-                //    Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
-
+                Observer.RaiseGameGenerallyUpdated();
                 Observer.RaiseGameBlindNeeded();
             }
         }
@@ -178,7 +188,7 @@ namespace BluffinMuffin.Client.Protocol
 
                 if (p != null)
                 {
-                    SetPlayerVisibility(p, cmd.PlayerState, cmd.Cards.Select(id => ConvertToGameCard(id)).ToList());
+                    SetPlayerVisibility(p, cmd.PlayerState, cmd.FaceUpCards.Select(ConvertToGameCard), cmd.FaceDownCards.Select(ConvertToGameCard));
 
                     Observer.RaisePlayerHoleCardsChanged(p);
                 }
@@ -186,16 +196,19 @@ namespace BluffinMuffin.Client.Protocol
         }
 
 
-        void OnPlayerJoinedCommandReceived(object sender, CommandEventArgs<PlayerJoinedCommand> e)
+        void OnGameMessageCommandReceived(object sender, CommandEventArgs<GameMessageCommand> e)
         {
             lock (m_PokerTable)
             {
-                var cmd = e.Command;
-                var p = new PlayerInfo() { Name = cmd.PlayerName };
+                if (e.Command.Info.OptionType == GameMessageEnum.PlayerJoined)
+                {
+                    var info = (GameMessageOptionPlayerJoined) e.Command.Info;
+                    var p = new PlayerInfo() {Name = info.PlayerName};
 
-                m_PokerTable.JoinTable(p);
+                    m_PokerTable.JoinTable(p);
+                }
 
-                Observer.RaisePlayerJoined(p);
+                Observer.RaiseGameMessage(e.Command.Info);
             }
         }
 
@@ -225,13 +238,15 @@ namespace BluffinMuffin.Client.Protocol
                 var cmd = e.Command;
                 var ps = m_PokerTable.Seats[cmd.NoSeat];
 
-                if (!ps.IsEmpty)
-                {
-                    m_PokerTable.ChangeCurrentPlayerTo(ps);
-                    m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaiseAmount;
+                if (ps.IsEmpty)
+                    return;
 
-                    Observer.RaisePlayerActionNeeded(ps.Player);
-                }
+                m_PokerTable.ChangeCurrentPlayerTo(ps);
+                m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaiseAmount;
+                m_PokerTable.CanFold = e.Command.CanFold;
+                m_PokerTable.HigherBet = ps.Player.MoneyBetAmnt + e.Command.AmountNeeded;
+
+                Observer.RaisePlayerActionNeeded(ps.Player);
             }
         }
 
@@ -280,12 +295,11 @@ namespace BluffinMuffin.Client.Protocol
             }
         }
 
-        void OnTableInfoCommandReceived(object sender, CommandEventArgs<TableInfoCommand> e)
+        public void FirstTableInfoReceived(JoinTableResponse cmd)
         {
             lock (m_PokerTable)
             {
-                var cmd = e.Command;
-                m_IsGameStarted = cmd.GameHasStarted;
+                IsPlaying = cmd.GameHasStarted;
                 InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
                 SetCards(cmd.BoardCards);
                 m_PokerTable.Params = cmd.Params;
@@ -356,27 +370,24 @@ namespace BluffinMuffin.Client.Protocol
 
         private GameCard ConvertToGameCard(string c)
         {
-            return new GameCard(String.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
+            return new GameCard(string.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
         }
 
         private void SetCards(IEnumerable<string> cardsId)
         {
-            var cards = cardsId.Select(ConvertToGameCard).ToArray();
-            m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
+            m_PokerTable.SetCards(cardsId.Select(ConvertToGameCard).ToArray());
         }
 
-        private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, List<GameCard> cards)
+        private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, IEnumerable<GameCard> faceUpCards, IEnumerable<GameCard> faceDownCards)
         {
             p.State = pState;
-            p.HoleCards = cards.Select(x => x.ToString()).ToArray();
+            p.FaceUpCards = faceUpCards.Select(x => x.ToString()).ToArray();
+            p.FaceDownCards = faceDownCards.Select(x => x.ToString()).ToArray();
         }
         #endregion Private Methods
 
 
-        public bool IsPlaying
-        {
-            get { return m_IsGameStarted; }
-        }
+        public bool IsPlaying { get; private set; }
 
         public override void Send(AbstractCommand command)
         {

@@ -127,8 +127,8 @@ namespace BluffinMuffin.Client.Protocol
 
         public void JoinTable(int idTable, string tableName, IPokerViewer gui)
         {
-            var ok = GetJoinedSeat(idTable, PlayerName);
-            if (!ok)
+            var resp = GetJoinedSeat(idTable, PlayerName);
+            if (!resp.Success)
             {
                 LogManager.Log(LogLevel.MessageLow, "LobbyTcpClient.JoinTable", "Cannot join the table: {0}:{1}", tableName, idTable);
                 return;
@@ -144,6 +144,7 @@ namespace BluffinMuffin.Client.Protocol
             }
 
             client.Start();
+            client.FirstTableInfoReceived(resp);
 
             m_Clients.Add(idTable, client);
         }
@@ -176,22 +177,22 @@ namespace BluffinMuffin.Client.Protocol
             return JsonConvert.DeserializeObject<T>(s);
         }
 
-        protected virtual bool GetJoinedSeat(int idTable, string player)
+        protected virtual JoinTableResponse GetJoinedSeat(int idTable, string player)
         {
             Send(new JoinTableCommand()
             {
                 TableId = idTable,
             });
 
-            return WaitAndReceive<JoinTableResponse>().Success;
+            return WaitAndReceive<JoinTableResponse>();
         }
 
-        public IEnumerable<RuleInfo> GetSupportedRules()
+        public IEnumerable<GameInfo> GetSupportedRules()
         {
-            var cmd = new CheckCompatibilityCommand() {ImplementedProtocolVersion="2.3.0"};
+            var cmd = new CheckCompatibilityCommand() {ImplementedProtocolVersion="3.0.0"};
             Send(cmd);
 
-            return WaitAndReceive<CheckCompatibilityResponse>().Rules;
+            return WaitAndReceive<CheckCompatibilityResponse>().AvailableGames;
         }
 
         protected override void Run()

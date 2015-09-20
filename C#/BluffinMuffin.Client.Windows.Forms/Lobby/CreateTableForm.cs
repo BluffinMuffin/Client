@@ -11,18 +11,17 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
     public partial class CreateTableForm : Form
     {
         public TableParams Params { get; private set; }
-        public CreateTableForm(string playerName, LobbyTypeEnum lobby, IEnumerable<RuleInfo> rules)
+        public CreateTableForm(string playerName, LobbyTypeEnum lobby, IEnumerable<GameInfo> games)
         {
             Params = null;
             InitializeComponent();
-            var availablesRules = rules.Where(r => r.AvailableLobbys.Contains(lobby));
 
-            var infos = availablesRules as RuleInfo[] ?? availablesRules.ToArray();
+            var infos = games as GameInfo[] ?? games.ToArray();
             foreach (var type in infos.Select(r => r.GameType).Distinct())
             {
                 var t = type.ToString();
                 var tp = new TabPage(t) { Name = "tab" + t, BackColor = Color.White };
-                tp.Controls.Add(new CreateTableTabControl(playerName, lobby, type, infos.Where(r => r.GameType.ToString() == t)) { Dock = DockStyle.Fill });
+                tp.Controls.Add(new CreateTableTabControl(playerName, lobby, infos.First(r => r.GameType.ToString() == t)) { Dock = DockStyle.Fill });
                 tabControl1.TabPages.Add(tp);
             }
         }

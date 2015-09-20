@@ -13,15 +13,13 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
     public partial class CreateTableTabControl : UserControl
     {
         readonly LobbyTypeEnum m_LobbyType;
-        readonly GameTypeEnum m_GameType;
-        readonly IEnumerable<RuleInfo> m_Rules;
-        String CurrentVariant { get { return lstVariant.SelectedItem.ToString(); } }
-        RuleInfo CurrentRule { get { return m_Rules.First(r => r.Name == CurrentVariant); } }
-        public CreateTableTabControl(string playerName, LobbyTypeEnum lobby, GameTypeEnum gameType, IEnumerable<RuleInfo> rules)
+        readonly GameInfo m_Game;
+        string CurrentVariant { get { return lstVariant.SelectedItem.ToString(); } }
+        //RuleInfo CurrentRule { get { return m_Rules.First(r => r.Name == CurrentVariant); } }
+        public CreateTableTabControl(string playerName, LobbyTypeEnum lobby, GameInfo game)
         {
             m_LobbyType = lobby;
-            m_GameType = gameType;
-            m_Rules = rules;
+            m_Game = game;
             InitializeComponent();
             txtTableName.Text = playerName + Resources.CreateTableTabControl_CreateTableTabControl__Table;
             InitVariants();
@@ -31,7 +29,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
 
         private void InitVariants()
         {
-            object[] names = m_Rules.Select(r => r.Name).ToArray();
+            object[] names = m_Game.AvailableVariants.OrderBy(x => (int)x).Select(EnumFactory<GameSubTypeEnum>.ToString).ToArray();
             lstVariant.Items.AddRange(names);
             lstVariant.SelectedItem = names[0];
             VariantChoosen();
@@ -52,31 +50,28 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
 
         private void SetMinMax()
         {
-            var rule = CurrentRule;
 
-            nudNbPlayersMin.Minimum = rule.MinPlayers;
-            nudNbPlayersMin.Maximum = rule.MaxPlayers;
-            nudNbPlayersMin.Value = rule.MinPlayers;
+            nudNbPlayersMin.Minimum = m_Game.MinPlayers;
+            nudNbPlayersMin.Maximum = m_Game.MaxPlayers;
+            nudNbPlayersMin.Value = m_Game.MinPlayers;
 
-            nudNbPlayersMax.Minimum = rule.MinPlayers;
-            nudNbPlayersMax.Maximum = rule.MaxPlayers;
-            nudNbPlayersMax.Value = rule.MaxPlayers;
+            nudNbPlayersMax.Minimum = m_Game.MinPlayers;
+            nudNbPlayersMax.Maximum = m_Game.MaxPlayers;
+            nudNbPlayersMax.Value = m_Game.MaxPlayers;
         }
 
         private void SetBetLimits()
         {
-            var rule = CurrentRule;
             lstBetLimit.Items.Clear();
-            lstBetLimit.Items.AddRange(rule.AvailableLimits.Select(EnumFactory<LimitTypeEnum>.ToString).ToArray());
-            lstBetLimit.SelectedIndex = lstBetLimit.FindStringExact(EnumFactory<LimitTypeEnum>.ToString(rule.DefaultLimit));
+            lstBetLimit.Items.AddRange(m_Game.AvailableLimits.Select(EnumFactory<LimitTypeEnum>.ToString).ToArray());
+            lstBetLimit.SelectedIndex = 0;
         }
 
         private void SetBlindTypes()
         {
-            var rule = CurrentRule;
             lstBlinds.Items.Clear();
-            lstBlinds.Items.AddRange(rule.AvailableBlinds.Select(EnumFactory<BlindTypeEnum>.ToString).ToArray());
-            lstBlinds.SelectedIndex = lstBlinds.FindStringExact(EnumFactory<BlindTypeEnum>.ToString(rule.DefaultBlind));
+            lstBlinds.Items.AddRange(m_Game.AvailableBlinds.Select(EnumFactory<BlindTypeEnum>.ToString).ToArray());
+            lstBlinds.SelectedIndex = 0;
             SetBlindRules();
         }
 
@@ -92,7 +87,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
             nudWTAPlayerAction.Value = 500;
             nudWTABoardDealed.Value = 500;
             nudWTAPotWon.Value = 2500;
-            grpTimes.Enabled = CurrentRule.CanConfigWaitingTime;
+            grpTimes.Enabled = true;
         }
 
         private void nudNbPlayersMin_ValueChanged(object sender, EventArgs e)
@@ -128,42 +123,30 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
                     case LobbyTypeEnum.RegisteredMode:
                         lobby = new LobbyOptionsRegisteredMode()
                         {
-                            MoneyUnit = moneyUnit,
                             IsMaximumBuyInLimited = rdBuyInLimited.Checked,
                         };
                         break;
                 }
-                BlindOptions blind = new BlindOptionsNone() { MoneyUnit = moneyUnit };
-                switch (EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem))
+                GameTypeOptions options = null;
+                switch (m_Game.GameType)
                 {
-                    case BlindTypeEnum.Blinds:
-                        blind = new BlindOptionsBlinds() { MoneyUnit = moneyUnit };
+                    case GameTypeEnum.CommunityCardsPoker:
+                        options = new GameTypeOptionsCommunity();
                         break;
-
-                    case BlindTypeEnum.Antes:
-                        blind = new BlindOptionsAnte() { MoneyUnit = moneyUnit };
+                    case GameTypeEnum.StudPoker:
+                        options = new GameTypeOptionsStud();
+                        break;
+                    case GameTypeEnum.DrawPoker:
+                        options = new GameTypeOptionsDraw();
                         break;
                 }
-                LimitOptions limit = null;
-                switch (EnumFactory<LimitTypeEnum>.Parse((string)lstBetLimit.SelectedItem))
-                {
-                    case LimitTypeEnum.NoLimit:
-                        limit = new LimitOptionsNoLimit();
-                        break;
-
-                    case LimitTypeEnum.FixedLimit:
-                        limit = new LimitOptionsFixed();
-                        break;
-
-                    case LimitTypeEnum.PotLimit:
-                        limit = new LimitOptionsPot();
-                        break;
-                }
+                BlindTypeEnum blind = EnumFactory<BlindTypeEnum>.Parse((string) lstBlinds.SelectedItem);
+                LimitTypeEnum limit = EnumFactory<LimitTypeEnum>.Parse((string)lstBetLimit.SelectedItem);
                 return new TableParams()
                 {
                     TableName = txtTableName.Text,
-                    GameType = m_GameType,
-                    Variant = lstVariant.SelectedItem.ToString(),
+                    Options = options,
+                    Variant = EnumFactory<GameSubTypeEnum>.Parse((string)lstVariant.SelectedItem),
                     MinPlayersToStart = (int)nudNbPlayersMin.Value,
                     MaxPlayers = (int)nudNbPlayersMax.Value,
                     WaitingTimes = new ConfigurableWaitingTimes()
@@ -175,7 +158,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
                     Lobby = lobby,
                     Blind = blind,
                     Limit = limit,
-                    MoneyUnit = moneyUnit,
+                    GameSize = moneyUnit,
                 };
             }
         }
@@ -189,9 +172,9 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
             var moneyUnit = (int)nudMoneyUnit.Value;
             var minBuyIn = moneyUnit * 20;
             var maxBuyIn = moneyUnit * 100;
-            lblGameSize.Text = String.Format("${0} / ${1}", moneyUnit, moneyUnit * 2);
-            lblMinimumBuyIn.Text = String.Format("${0}", minBuyIn);
-            lblMaximumBuyIn.Text = String.Format("(${0})", maxBuyIn);
+            lblGameSize.Text = string.Format("${0} / ${1}", moneyUnit, moneyUnit * 2);
+            lblMinimumBuyIn.Text = string.Format("${0}", minBuyIn);
+            lblMaximumBuyIn.Text = string.Format("(${0})", maxBuyIn);
             ucAnte.SetAnte(moneyUnit);
             ucBlinds.SetBlinds(moneyUnit);
             nudStartingAmount.Minimum = minBuyIn;

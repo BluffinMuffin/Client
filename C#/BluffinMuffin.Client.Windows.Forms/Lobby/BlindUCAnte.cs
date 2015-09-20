@@ -12,7 +12,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Lobby
 
         public void SetAnte( int ante )
         {
-            lblAnte.Text = String.Format("${0}", ante);
+            lblAnte.Text = string.Format("${0}", ante);
         }
     }
 }

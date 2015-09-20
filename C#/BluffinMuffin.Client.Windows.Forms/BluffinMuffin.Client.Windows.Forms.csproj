@@ -200,6 +200,7 @@
   <ItemGroup>
     <Content Include="Resources\big_blind.png" />
     <Content Include="Resources\dealer.png" />
+    <None Include="Resources\firstTalker.png" />
     <Content Include="Resources\hands_strength.png" />
     <Content Include="Resources\small_blind.png" />
     <Content Include="Resources\table.png" />

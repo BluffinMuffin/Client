@@ -3,6 +3,7 @@ using BluffinMuffin.Protocol.DataTypes.Enums;
 using BluffinMuffin.Protocol.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 using System;
+using BluffinMuffin.Protocol.DataTypes.Options;
 
 namespace BluffinMuffin.Client.DataTypes.EventHandling
 {
@@ -16,7 +17,7 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         public event EventHandler GameGenerallyUpdated = delegate { };
         public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
         public event EventHandler GameBettingRoundEnded = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
+        public event EventHandler<GameMessageOptionEventArgs> GameMessageReceived = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
         public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerActionNeeded = delegate { };
@@ -55,9 +56,9 @@ namespace BluffinMuffin.Client.DataTypes.EventHandling
         {
             GameBettingRoundEnded(m_Game, new EventArgs());
         }
-        public void RaisePlayerJoined(PlayerInfo p)
+        public void RaiseGameMessage(GameMessageOption o)
         {
-            PlayerJoined(m_Game, new PlayerInfoEventArgs(p));
+            GameMessageReceived(m_Game, new GameMessageOptionEventArgs(o));
         }
         public void RaisePlayerHoleCardsChanged(PlayerInfo p)
         {

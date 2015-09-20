@@ -33,7 +33,7 @@ namespace BluffinMuffin.Client.Menu
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
-            btnPlay.Enabled = !String.IsNullOrEmpty(txtUsername.Text) && !String.IsNullOrEmpty(txtPassword.Text);
+            btnPlay.Enabled = !string.IsNullOrEmpty(txtUsername.Text) && !string.IsNullOrEmpty(txtPassword.Text);
         }
     }
 }

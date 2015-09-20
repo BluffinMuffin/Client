@@ -530,7 +530,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             // 
             this.cardPictureBox5.BackColor = System.Drawing.Color.Transparent;
             this.cardPictureBox5.Card = null;
-            this.cardPictureBox5.Location = new System.Drawing.Point(549, 240);
+            this.cardPictureBox5.Location = new System.Drawing.Point(569, 240);
             this.cardPictureBox5.Name = "cardPictureBox5";
             this.cardPictureBox5.Size = new System.Drawing.Size(40, 56);
             this.cardPictureBox5.TabIndex = 17;
@@ -540,7 +540,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             // 
             this.cardPictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.cardPictureBox4.Card = null;
-            this.cardPictureBox4.Location = new System.Drawing.Point(469, 240);
+            this.cardPictureBox4.Location = new System.Drawing.Point(489, 240);
             this.cardPictureBox4.Name = "cardPictureBox4";
             this.cardPictureBox4.Size = new System.Drawing.Size(40, 56);
             this.cardPictureBox4.TabIndex = 16;
@@ -550,7 +550,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             // 
             this.cardPictureBox3.BackColor = System.Drawing.Color.Transparent;
             this.cardPictureBox3.Card = null;
-            this.cardPictureBox3.Location = new System.Drawing.Point(389, 240);
+            this.cardPictureBox3.Location = new System.Drawing.Point(409, 240);
             this.cardPictureBox3.Name = "cardPictureBox3";
             this.cardPictureBox3.Size = new System.Drawing.Size(40, 56);
             this.cardPictureBox3.TabIndex = 15;
@@ -570,7 +570,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             // 
             this.cardPictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.cardPictureBox1.Card = null;
-            this.cardPictureBox1.Location = new System.Drawing.Point(269, 240);
+            this.cardPictureBox1.Location = new System.Drawing.Point(249, 240);
             this.cardPictureBox1.Name = "cardPictureBox1";
             this.cardPictureBox1.Size = new System.Drawing.Size(40, 56);
             this.cardPictureBox1.TabIndex = 13;

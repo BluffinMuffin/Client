@@ -6,12 +6,13 @@ namespace BluffinMuffin.Client.Protocol
 {
     class DummyTable : TableInfo
     {
+
         /// <summary>
         /// Sets the cards on the table
         /// </summary>
-        public void SetCards(GameCard c1, GameCard c2, GameCard c3, GameCard c4, GameCard c5)
+        public void SetCards(params GameCard[] cards)
         {
-            Cards = new[] { c1, c2, c3, c4, c5 };
+            Cards = cards;
         }
 
         public void ClearSeat(int noSeat)

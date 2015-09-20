@@ -94,7 +94,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             m_DiscardInfo = e;
-            string[] cards = e.Player.HoleCards.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            string[] cards = e.Player.Cards.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             chkC1.Checked = false;
             chkC2.Checked = false;
             chkC3.Checked = false;
@@ -199,7 +199,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             var table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
-                EnableButton(btnFold);
+                if(m_Game.Table.CanFold)
+                    EnableButton(btnFold);
                 SetCallButtonName(p);
                 EnableButton(btnCall);
                 if (table.HigherBet < p.MoneyAmnt)
@@ -210,7 +211,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                     nudRaise.Minimum = min;
                     nudRaise.Maximum = p.MoneyAmnt;
                     nudRaise.Value = min;
-                    nudRaise.Increment = min;
+                    nudRaise.Increment = table.MinimumRaiseAmount;
                 }
             }
         }

@@ -122,7 +122,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated_Console;
             m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken_Console;
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged_Console;
-            m_Game.Observer.PlayerJoined += OnPlayerJoined_Console;
+            m_Game.Observer.GameMessageReceived += OnGameMessageReceived_Console;
             m_Game.Observer.SeatUpdated += OnSeatUpdated_Console;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot_Console;
             m_Game.Observer.DiscardActionNeeded += OnDiscardActionNeeded_Console;
@@ -150,6 +150,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 m_Huds[i].DoAction(GameActionEnum.DoNothing);
                 m_Bets[i].Text = "";
             }
+
+            if (table.Params.Options.OptionType == GameTypeEnum.StudPoker)
+                m_Huds.ToList().ForEach(x => x.SetNoBlind());
+
             ResumeLayout();
         }
 
@@ -165,11 +169,12 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             var table = m_Game.Table;
             foreach (var p in table.Players)
                 m_Huds[p.NoSeat].Alive = true;
+
             var i = 0;
-            for (; i < 5 && table.Cards[i].Id != GameCard.NoCard.Id; ++i)
+            for (; i < table.Cards.Length; ++i)
                 m_Board[i].Card = table.Cards[i];
             for (; i < 5; ++i)
-                m_Board[i].Card = GameCard.Hidden;
+                m_Board[i].Card = GameCard.NoCard;
             ResumeLayout();
         }
 
@@ -248,10 +253,10 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 }
 
                 var j = 0;
-                for (; j < 5 && table.Cards[j].Id != GameCard.NoCard.Id; ++j)
+                for (; j < table.Cards.Length; ++j)
                     m_Board[j].Card = table.Cards[j];
                 for (; j < 5; ++j)
-                    m_Board[j].Card = m_Game.IsPlaying ? GameCard.Hidden : GameCard.NoCard;
+                    m_Board[j].Card = GameCard.NoCard;
 
                 foreach (var si in table.Seats)
                 {
@@ -264,6 +269,11 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                     m_Bets[i].Text = table.Seats[i].IsEmpty || table.Seats[i].Player.MoneyBetAmnt == 0 ? "" : "$" + table.Seats[i].Player.MoneyBetAmnt;
                 }
 
+                if (table.Params.Options.OptionType == GameTypeEnum.StudPoker)
+                {
+                    //Set FirstTalker Icon
+                    table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.FirstTalker)).ToList().ForEach(x => m_Huds[x.NoSeat].SetFirstTalker());
+                }
                 //Set Small Blind Icon
                 table.Seats.Where(x => x.SeatAttributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetSmallBlind());
 
@@ -329,8 +339,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             SuspendLayout();
             var p = e.Player;
             var php = m_Huds[p.NoSeat];
-            if(p.HoleCards.Any())
-                php.SetCards(p.HoleCards.Select(ConvertToGameCard).ToArray());
+            if (p.Cards.Any())
+                php.SetCards(p.Cards.Select(ConvertToGameCard).ToArray());
             else
                 php.SetCards(null, null);
             ResumeLayout();
@@ -392,7 +402,7 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             WriteLine("==> Beginning of " + RoundNameFromId(e.Round));
             var boardCards = table.Cards.Where(c => c != null && c.Id != GameCard.NoCard.Id).ToArray();
             if (boardCards.Any())
-                WriteLine("==> Current board cards: " + String.Join(" ", boardCards.Select(c => c.ToString())));
+                WriteLine("==> Current board cards: " + string.Join(" ", boardCards.Select(c => c.ToString())));
         }
 
         public string RoundNameFromId(int id)
@@ -447,6 +457,17 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
             WriteLine("==> End of the Game");
         }
 
+        private void OnGameMessageReceived_Console(object sender, GameMessageOptionEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<GameMessageOptionEventArgs>(OnGameMessageReceived_Console), sender, e);
+                return;
+            }
+            WriteLine("==> " + e.Info.BuildMessage());
+        }
+
         void OnGameGenerallyUpdated_Console(object sender, EventArgs e)
         {
             if (InvokeRequired)
@@ -483,19 +504,8 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 return;
             }
             var p = e.Player;
-            if (p.HoleCards.Any() && ConvertToGameCard(p.HoleCards[0]).Id >= 0)
-                WriteLine("==> Hole Card changed for " + p.Name + ": " + String.Join(" ", p.HoleCards));
-        }
-
-        void OnPlayerJoined_Console(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined_Console), new[] { sender, e });
-                return;
-            }
-            WriteLine(e.Player.Name + " joined the table");
+            if (p.Cards.Any() && ConvertToGameCard(p.Cards[0]).Id >= 0)
+                WriteLine("==> Hole Card changed for " + p.Name + ": " + string.Join(" ", p.Cards));
         }
 
         void OnSeatUpdated_Console(object sender, SeatEventArgs e)
@@ -521,12 +531,12 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot_Console), new[] { sender, e });
                 return;
             }
-            WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ") with " + e.Hand + " [" + String.Join(",", e.Cards) + "]");
+            WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ") with " + e.Hand + " [" + string.Join(",", e.Cards) + "]");
         }
 
         private GameCard ConvertToGameCard(string c)
         {
-            return new GameCard(String.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
+            return new GameCard(string.IsNullOrEmpty(c) ? "--" : c.Replace("10", "T"));
         }
 
         private void InstallPlayer(PlayerHud php, SeatInfo seat)
@@ -538,13 +548,12 @@ namespace BluffinMuffin.Client.Windows.Forms.Game
                 var player = seat.Player;
                 php.PlayerName = player.Name;
                 php.DoAction(GameActionEnum.DoNothing);
-                var cards = (player.HoleCards??new []{"--","--"}).ToArray();
                 php.SetMoney(player.MoneySafeAmnt);
                 php.SetSleeping();
                 php.Main = (m_NoSeat == player.NoSeat);
                 php.Alive = player.State == PlayerStateEnum.Playing;
                 if (php.Alive)
-                    php.SetCards(cards.Select(ConvertToGameCard).ToArray());
+                    php.SetCards(player.Cards.Select(ConvertToGameCard).ToArray());
                 php.Visible = true;
                 php.SetDealerButtonVisible(seat.SeatAttributes.Contains(SeatAttributeEnum.Dealer));
             }
