@@ -201,7 +201,7 @@ namespace BluffinMuffin.Client.DataTypes
             for (var i = 0; i < Params.MaxPlayers; ++i)
             {
                 var si = m_Seats[(noSeat + 1 + i) % Params.MaxPlayers];
-                if (!si.IsEmpty && si.Player.IsPlaying)
+                if (!si.IsEmpty && si.Player.State == PlayerStateEnum.Playing)
                     return si;
             }
             return seat;
@@ -215,7 +215,7 @@ namespace BluffinMuffin.Client.DataTypes
                 if (id < 0)
                     id = Params.MaxPlayers + id;
                 var si = m_Seats[id];
-                if (!si.IsEmpty && si.Player.IsPlaying)
+                if (!si.IsEmpty && si.Player.State == PlayerStateEnum.Playing)
                     return si;
             }
             return seat;
@@ -311,12 +311,12 @@ namespace BluffinMuffin.Client.DataTypes
 
         private List<PlayerInfo> PlayingPlayersFrom()
         {
-            return m_Seats.Where(s => (!s.IsEmpty && s.Player.IsPlaying)).Select(s => s.Player).ToList();
+            return m_Seats.Where(s => (!s.IsEmpty && s.Player.State == PlayerStateEnum.Playing)).Select(s => s.Player).ToList();
         }
 
         private IEnumerable<PlayerInfo> PlayingAndAllInPlayersFrom()
         {
-            return m_Seats.Where(s => (!s.IsEmpty && (s.Player.IsPlaying || s.Player.IsAllIn))).Select(s => s.Player);
+            return m_Seats.Where(s => (!s.IsEmpty && (s.Player.State == PlayerStateEnum.Playing || s.Player.State == PlayerStateEnum.AllIn))).Select(s => s.Player);
         }
 
         public bool SeatsContainsPlayer(PlayerInfo p)

@@ -1,4 +1,5 @@
-﻿using BluffinMuffin.DataTypes;
+﻿using BluffinMuffin.Client.Extensions;
+using BluffinMuffin.DataTypes;
 using BluffinMuffin.Client.Windows.Forms.Game;
 
 namespace BluffinMuffin.Client.Game
@@ -15,7 +16,7 @@ namespace BluffinMuffin.Client.Game
         protected override int GetSitInMoneyAmount()
         {
             var parms = m_Game.Table.Params;
-            if (User.TotalMoney < parms.MinimumBuyInAmount)
+            if (User.TotalMoney < parms.Lobby.MinimumBuyInAmount(parms.GameSize))
                 return -1;
             var bif = new BuyInForm(User, m_Game.Table.Params);
             bif.ShowDialog();
